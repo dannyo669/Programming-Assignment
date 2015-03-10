@@ -1,0 +1,48 @@
+public class Board {
+private int steel = 10;
+private int store = 10;
+private int motor = 10;
+private int shipping = 10;
+private String playerName;
+private int round =0;
+
+
+public Board(String playerName)
+{
+	if (playerName.length() < 11)
+	{
+		this.playerName=playerName;
+	}
+	else
+	{
+		this.playerName=playerName.substring(0, 10);
+	}
+	
+	
+}
+
+public  void  setPlayerName (String playerName)
+{
+	if (playerName.length() < 10)
+	{
+		this.playerName=playerName;
+	}
+	else
+	{
+		System.out.println("Player Name has to be under 10 characters");
+	}
+}
+
+public String getCounterPositions()
+{
+	return toString();
+}
+
+
+public String toString()
+{
+	return("The current price for motor is:    £" + steel + "The current price for store is:    £"
++ store + "The current price for motor is:    £" + motor + "The current price for motor is:    £" + shipping);
+}
+
+}

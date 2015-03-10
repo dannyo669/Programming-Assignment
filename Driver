@@ -97,6 +97,8 @@ public class Driver {
 		System.out.println("Welcome to Stocks and Shares");
 		System.out.println("---------");     
 		System.out.println("  1) Add Player Names");    
+		System.out.println("  2) Load Game");
+		System.out.println("  3) Quit Game");
 		int option = input.nextInt();
 		return option;	
 	}

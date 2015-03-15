@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Player {
 	private int playerBalance = 80;
 	private String playerName; 
+
+	ArrayList<String> playerNames = new ArrayList<String>();
 
 	public Player(String playerName, int playerBalance)
 	{
@@ -11,8 +16,10 @@ public class Player {
 		{
 			playerName.substring(0, 10);
 		}
-
-
+	}
+	
+	public Player() {
+		// for bug I think?????
 	}
 
 	public  void  setPlayerName (String playerName)
@@ -29,15 +36,10 @@ public class Player {
 	public String getPlayerName() {
 		return playerName;
 	}
-
-	public Player (int playerBalance)
-	{
-		this.playerBalance = playerBalance;
-
-	}
-
+	
 	public int getPlayerBalance(){
 		return playerBalance;
 
 	}
-} 
+
+}

@@ -1,3 +1,43 @@
 public class Player {
+	private int playerBalance = 80;
+	private String playerName; 
 
-}
+	public Player(String playerName, int playerBalance)
+	{
+		if (playerName.length() < 11)
+		{
+		}
+		else
+		{
+			playerName.substring(0, 10);
+		}
+
+
+	}
+
+	public  void  setPlayerName (String playerName)
+	{
+		if (playerName.length() < 10)
+		{
+		}
+		else
+		{
+			System.out.println("Player Name has to be under 10 characters");
+		}
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public Player (int playerBalance)
+	{
+		this.playerBalance = playerBalance;
+
+	}
+
+	public int getPlayerBalance(){
+		return playerBalance;
+
+	}
+} 

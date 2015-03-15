@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+
+public class Cards {
+	private String[] upOrDown={"£4 Down", "£3 Down", "£2 Down", "£2 Up", "£3 Up", "£4 Up"};
+	private String[] stockTypes={"Store", "Shipping", "Motor", "Steel"};
+	private Random randomGenerator;
+	private CardSetup idk;
+	private int index;
+	ArrayList<CardSetup> cards = new ArrayList<CardSetup>();
+	
+	public Cards(){
+		makeCards();
+		index=0;
+		randomGenerator = new Random();
+	}
+
+
+public void makeCards(){
+	idk = new CardSetup("Bull", "£4 Up");
+	cards.add(idk);
+	idk = new CardSetup("Bear", "£4 Down");
+	cards.add(idk);
+	for (int i=0; i<=3; i++)
+	{
+		for (int a=0; a<=5; a++){
+			idk = new CardSetup(stockTypes[i], upOrDown[a]);
+			cards.add(idk);
+		}
+	}
+}
+
+public String checkCards(){
+	String str="";
+	for (int i=0; i<=25; i++){
+	str += cards.get(i).getCardType() + cards.get(i).getCardNumber();
+	}
+	return str;
+}
+
+public int getIndex(){
+	return index;
+}
+
+public void removeArray(int index){
+	cards.remove(index);
+}
+
+public CardSetup currentCard(){
+	return cards.get(index);
+}
+
+
+
+	
+	public String drawCard(){
+		this.index = randomGenerator.nextInt(cards.size());
+		String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
+				"  |"    + "\n" + "|     "
+               		+ "   |"  + "\n" + "|        |"  + "\n" + "| " + cards.get(index).getCardNumber() + "  |" + "\n" 
+				     + " ¯¯¯¯¯¯¯¯");
+		return str;
+	}
+ }

@@ -17,7 +17,7 @@ public class Driver {
 		board = new Board();
 		player = new Player();
 		cards = new Cards();
-		cardSetup = new CardSetup(null, null);
+		cardSetup = new CardSetup(null, null, 0);
 		i=0;
 		numberOfPlayers();
 	}
@@ -63,9 +63,9 @@ public class Driver {
 			case 1:    addPlayer();
 			break; 
 			// case 2 is load game feature, add later?
-			case 3:    firstMenu();
+			case 3:    System.out.println(board.toString());
 			break;
-			case 4:    System.out.println(cards.drawCard());
+			case 4:    firstMenu();
 			break;
 			}
 			System.out.println("\nPress any key to continue...");
@@ -110,7 +110,8 @@ public class Driver {
 		System.out.println("---------");     
 		System.out.println("  1) Add Player Names");    
 		System.out.println("  2) Load Game");
-		System.out.println("  3) End Turn");
+		System.out.println("   3)  Get Current Stock Prices");
+		System.out.println("  4) End Turn");
 		System.out.println("  0) Quit Game");
 		int option = input.nextInt();
 		return option;	
@@ -121,7 +122,7 @@ public class Driver {
 		System.out.println("Stocks and Shares");
 		System.out.println("---------");     
 		System.out.println("  1) Draw Card");
-		System.out.println("   2)  Get Current Stock Prices");
+		
 		System.out.println("   3)  Save Game");
 		
 		int option = input.nextInt();

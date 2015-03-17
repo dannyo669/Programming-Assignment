@@ -3,7 +3,8 @@ import java.util.Random;
 
 
 public class Cards {
-	private String[] upOrDown={"£4 Down", "£3 Down", "£2 Down", "£2 Up", "£3 Up", "£4 Up"};
+	private int[] prices = {2, 3, 4};
+	private String[] upOrDown={"Down: £", "Up: £"};
 	private String[] stockTypes={"Store", "Shipping", "Motor", "Steel"};
 	private Random randomGenerator;
 	private CardSetup idk;
@@ -17,19 +18,22 @@ public class Cards {
 	}
 
 
-public void makeCards(){
-	idk = new CardSetup("Bull", "£4 Up");
-	cards.add(idk);
-	idk = new CardSetup("Bear", "£4 Down");
-	cards.add(idk);
-	for (int i=0; i<=3; i++)
-	{
-		for (int a=0; a<=5; a++){
-			idk = new CardSetup(stockTypes[i], upOrDown[a]);
-			cards.add(idk);
+	public void makeCards(){
+		idk = new CardSetup("Bull", "Up: £", 4);
+		cards.add(idk);
+		idk = new CardSetup("Bear", "Down: £", 4);
+		cards.add(idk);
+		for (int i=0; i<=3; i++)
+		{
+			for (int a=0; a<=1; a++){
+				for (int b=0; b<=2; b++){
+				idk = new CardSetup(stockTypes[i], upOrDown[a], prices[b] );
+				cards.add(idk);
+				}
+
+			}
 		}
 	}
-}
 
 public String checkCards(){
 	String str="";
@@ -54,12 +58,13 @@ public CardSetup currentCard(){
 
 
 	
-	public String drawCard(){
-		this.index = randomGenerator.nextInt(cards.size());
-		String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
-				"  |"    + "\n" + "|     "
-               		+ "   |"  + "\n" + "|        |"  + "\n" + "| " + cards.get(index).getCardNumber() + "  |" + "\n" 
-				     + " ¯¯¯¯¯¯¯¯");
-		return str;
-	}
+public String drawCard(){
+	this.index = randomGenerator.nextInt(cards.size());
+	String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
+			"  |"    + "\n" + "|     "
+           		+ "   |"  + "\n" + "|        |"  + "\n" + "| " +  cards.get(index).getUpOrDown() + cards.get(index).getCardNumber() 
+           		+ "  |" + "\n" 
+			     + " ¯¯¯¯¯¯¯¯");
+	return str;
+}
  }

@@ -2,9 +2,13 @@
 public class CardSetup {
 
 	private String cardType;
-	private String cardNumber;
-	public CardSetup(String cardType, String cardNumber){
+	
+	private String upOrDown;
+	private int cardNumber;
+	
+	public CardSetup(String cardType, String upOrDown, int cardNumber){
 		this.cardType=cardType;
+		this.upOrDown=upOrDown;
 		this.cardNumber=cardNumber;
 	}
 	
@@ -17,12 +21,20 @@ public class CardSetup {
 		this.cardType=cardType;
 	}
 	
-	public String getCardNumber(){
+	public int getCardNumber(){
 		return cardNumber;
 	}
 	
-	public void setCardNumber(String cardNumber){
+	public void setCardNumber(int cardNumber){
 		this.cardNumber=cardNumber;
+	}
+	
+	public String getUpOrDown(){
+		return upOrDown;
+	}
+	
+	public void setUpOrDown(String upOrDown){
+		this.upOrDown=upOrDown;
 	}
 	
 	

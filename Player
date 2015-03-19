@@ -1,12 +1,18 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Player class contains the players balance and name
+ */
+
+//Instance variables
 public class Player {
 	private int playerBalance = 80;
 	private String playerName; 
 
 	ArrayList<String> playerNames = new ArrayList<String>();
-
+	
+    //Player name and balance
 	public Player(String playerName, int playerBalance)
 	{
 		if (playerName.length() < 11)
@@ -17,11 +23,16 @@ public class Player {
 			playerName.substring(0, 10);
 		}
 	}
-	
+
+	public void setPlayerBalance(int playerBalance){
+		this.playerBalance = playerBalance;
+	}
+
 	public Player() {
 		// for bug I think?????
 	}
-
+    
+	//Sets player name
 	public  void  setPlayerName (String playerName)
 	{
 		if (playerName.length() < 10)
@@ -33,10 +44,12 @@ public class Player {
 		}
 	}
 
+	//Returns the player's name
 	public String getPlayerName() {
 		return playerName;
 	}
-	
+   
+	//Returns the player's balance
 	public int getPlayerBalance(){
 		return playerBalance;
 

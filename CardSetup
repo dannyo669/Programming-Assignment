@@ -1,80 +1,42 @@
-import java.util.ArrayList;
-import java.util.Random;
 
+public class CardSetup {
 
-public class Cards {
-	private int[] prices = {2, 3, 4};
-	private String[] upOrDown={"Down: £", "Up: £"};
-	private String[] stockTypes={"Store", "Shipping", "Motor", "Steel"};
-	private Random randomGenerator;
-	private CardSetup idk;
-	private int index;
-	ArrayList<CardSetup> cards = new ArrayList<CardSetup>();
+	private String cardType;
 	
-	public Cards(){
-		makeCards();
-		index=0;
-		randomGenerator = new Random();
-	}
-
-
-	public void makeCards(){
-		idk = new CardSetup("Bull", "Up: £", 4);
-		cards.add(idk);
-		idk = new CardSetup("Bear", "Down: £", 4);
-		cards.add(idk);
-		for (int i=0; i<=3; i++)
-		{
-			for (int a=0; a<=1; a++){
-				for (int b=0; b<=2; b++){
-				idk = new CardSetup(stockTypes[i], upOrDown[a], prices[b] );
-				cards.add(idk);
-				}
-
-			}
-		}
-	}
-
-public String checkCards(){
-	String str="";
-	for (int i=0; i<=25; i++){
-	str += cards.get(i).getCardType() + cards.get(i).getCardNumber();
-	}
-	return str;
-}
-
-public int getIndex(){
-	return index;
-}
-
-public void removeArray(int index){
-	cards.remove(index);
-}
-
-public CardSetup currentCard(){
-	return cards.get(index);
-}
-
-public String currentCardType(int index2){
-	return cards.get(index).getCardType();
-}
-
-public int currentCardValue(int index){
-	return cards.get(index).getCardNumber();
-}
-
-public String currentUpOrDown(int index){
-	return cards.get(index).getUpOrDown();
-}
-
+	private String upOrDown;
+	private int cardNumber;
 	
-public String drawCard(){
-	this.index = randomGenerator.nextInt(cards.size());
-	String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
-			"  |"    + "\n" + "|     "
-           		+ "   |"  + "\n" + "|        |"  + "\n" + "| " +  cards.get(index).getUpOrDown() + cards.get(index).getCardNumber() 
-           		+ "  |" + "\n" 
-			     + " ¯¯¯¯¯¯¯¯");
-	return str;
+	public CardSetup(String cardType, String upOrDown, int cardNumber){
+		this.cardType=cardType;
+		this.upOrDown=upOrDown;
+		this.cardNumber=cardNumber;
+	}
+	
+
+	public String getCardType(){
+		return cardType;
+	}
+	
+	public void setCardType(String cardType){
+		this.cardType=cardType;
+	}
+	
+	public int getCardNumber(){
+		return cardNumber;
+	}
+	
+	public void setCardNumber(int cardNumber){
+		this.cardNumber=cardNumber;
+	}
+	
+	public String getUpOrDown(){
+		return upOrDown;
+	}
+	
+	public void setUpOrDown(String upOrDown){
+		this.upOrDown=upOrDown;
+	}
+	
+	
+	
 }
- }

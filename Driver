@@ -1,12 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-/**
- * Driver class creates a UI for the players to interact with
- */
-
 public class Driver {
-    //Instance variables
+
 	private Scanner input;
 	private Board board;
 	private Player player;
@@ -14,8 +10,7 @@ public class Driver {
 	private CardSetup cardSetup;
 	int i;
 	ArrayList<String> playerNames = new ArrayList<String>();
-    
-	
+
 	public Driver()
 	{
 		input = new Scanner(System.in);
@@ -33,7 +28,7 @@ public class Driver {
 
 
 
-    //Allows 3-6 players to play
+
 	private void numberOfPlayers()
 	{
 		System.out.println("Enter the number of players: ");
@@ -56,8 +51,7 @@ public class Driver {
 
 
 	}
-   
-	//Runs the method
+
 	private void run()
 	{
 		int option = mainMenu();
@@ -71,7 +65,11 @@ public class Driver {
 			// case 2 is load game feature, add later?
 			case 3:    System.out.println(board.toString());
 			break;
-			case 4:    firstMenu();
+			case 4:    
+				if (playerNames.size() > 0){
+					firstMenu();
+				}
+				else System.out.println("Add players first");
 			break;
 			}
 			System.out.println("\nPress any key to continue...");
@@ -85,8 +83,7 @@ public class Driver {
 		System.out.println("Exiting... bye");
 		System.exit(0);
 	}
-     
-	//Display of the first method
+
 	private void firstMenu()
 	{
 		int option = mainMenuTwo();
@@ -98,6 +95,8 @@ public class Driver {
 			case 1:    drawingCards(); 
 			break;
 		//	case 2:    load
+			case 3:    System.out.println(board.toString());
+			break;
 			}
 			System.out.println("\nPress any key to continue...");
 			input.nextLine();
@@ -110,22 +109,20 @@ public class Driver {
 		System.out.println("Exiting... bye");
 		System.exit(0);
 	}
-	 
-	//Main menu display
+	
 	private int mainMenu()     
 	{ 
 		System.out.println("Welcome to Stocks and Shares");
 		System.out.println("---------");     
 		System.out.println("  1) Add Player Names");    
 		System.out.println("  2) Load Game");
-		System.out.println("   3)  Get Current Stock Prices");
-		System.out.println("  4) End Turn");
+		System.out.println("  3)  Get Current Stock Prices");
+		System.out.println("  4) Start Game");
 		System.out.println("  0) Quit Game");
 		int option = input.nextInt();
 		return option;	
 	}
 	
-	//Second menu display
 	private int mainMenuTwo()
 	{
 		System.out.println("Stocks and Shares");
@@ -138,7 +135,7 @@ public class Driver {
 		return option;	
 	}
 
-    //Allows you to add player's names
+
 	private void addPlayer()  
 	{
 		for(int b=0; b<i; b++)
@@ -150,26 +147,86 @@ public class Driver {
 
 		}
 	}
+
+
 	
-	//Draws cards
 	public String drawingCards(){
 		int i=1;
+        int check =0;
 		if (playerNames.size() > 0)
 		{
-		for (String player: playerNames){
-			        System.out.println("Player" + i + " are you ready to draw your card?");
-			        String newStatus = input.nextLine();
-			        newStatus.toLowerCase();
-			        if (newStatus.equals("y"))
-			        {
+			for (check = 0; check<=playerNames.size(); check ++)
+			for (String player: playerNames){
+				{
+				System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
+				String newStatus = input.nextLine();
+				newStatus=input.nextLine(); // bug?
+				newStatus.toLowerCase();
+				if (newStatus.equals("y"))
+				{
 					System.out.println(cards.drawCard());
-				    cards.removeArray(cards.getIndex());
-				    i++;
-			        }
+					int index = cards.getIndex();
+					if (cards.currentCardType(index).equals("Store")){
+						if (cards.currentUpOrDown(index).equals("Up: £")){
+							board.setStoreUp(cards.currentCardValue(index));
+						}
+					
+					    else {
+							board.setStoreDown(cards.currentCardValue(index));
+						}
+					}
+
+						if (cards.currentCardType(index).equals("Steel")){
+							if (cards.currentUpOrDown(index).equals("Up: £")){
+								board.setSteelUp(cards.currentCardValue(index));
+							}
+							else {
+								board.setSteelDown(cards.currentCardValue(index));
+							}
+						}
+
+							if (cards.currentCardType(index).equals("Shipping")){
+								if (cards.currentUpOrDown(index).equals("Up: £")){
+									board.setShippingUp(cards.currentCardValue(index));
+								}
+								else {
+									board.setShippingDown(cards.currentCardValue(index));
+								}
+							}
+							
+								if (cards.currentCardType(index).equals("Motor")){
+									if (cards.currentUpOrDown(index).equals("Up: £")){
+										board.setMotorUp(cards.currentCardValue(index));
+									}
+									else {
+										board.setMotorDown(cards.currentCardValue(index));
+									}	
+									
+								}
+								if (cards.currentCardType(index).equals("Bear")){
+									board.setMotorDown(cards.currentCardValue(index));
+									board.setShippingDown(cards.currentCardValue(index));
+									board.setStoreDown(cards.currentCardValue(index));
+									board.setSteelDown(cards.currentCardValue(index));
+								}
+								
+								if (cards.currentCardType(index).equals("Bull")){
+									board.setMotorUp(cards.currentCardValue(index));
+									board.setShippingUp(cards.currentCardValue(index));
+									board.setStoreUp(cards.currentCardValue(index));
+									board.setSteelUp(cards.currentCardValue(index));
+								}
+								   cards.removeArray(cards.getIndex());
+									i++;	
+							
 				}
-		cards.makeCards();
+				}
+				cards.makeCards();
+			}
 		}
-	return "Need more players";
-}
+
+		return "Need more players";
 	}
+}
+
 

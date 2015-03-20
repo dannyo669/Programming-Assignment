@@ -9,7 +9,8 @@ public class Driver {
 	private Cards cards;
 	private CardSetup cardSetup;
 	int i;
-	ArrayList<String> playerNames = new ArrayList<String>();
+	private int playerNumber;
+	ArrayList<Player> playerNames = new ArrayList<Player>();
 
 	public Driver()
 	{
@@ -19,6 +20,7 @@ public class Driver {
 		cards = new Cards();
 		cardSetup = new CardSetup(null, null, 0);
 		i=0;
+		playerNumber = 1;
 		numberOfPlayers();
 	}
 
@@ -54,6 +56,10 @@ public class Driver {
 
 	private void run()
 	{
+		if (round == 12){
+			do shit
+		}
+		else{
 		int option = mainMenu();
 		while (option != 0)
 		{
@@ -110,6 +116,37 @@ public class Driver {
 		System.exit(0);
 	}
 	
+	private void secondMenu()
+	{
+		int option = mainMenuTwo();
+		while (option != 0)
+		{
+
+			switch (option)
+			{
+			case 1:    //buy stocks 
+			break;
+			case 2:    //sell stocks
+			break;
+			case 3:    //check current stocks
+			break;
+			case 4:    //Save Game
+			break;
+			case 5:    mainMenu();
+			           playerNumber++;
+			
+			}
+			System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+
+			//clear the terminal window and display the main menu again
+			System.out.println("\f");
+			option = mainMenuTwo();
+		}   
+		System.out.println("Exiting... bye");
+		System.exit(0);
+	}
 	private int mainMenu()     
 	{ 
 		System.out.println("Welcome to Stocks and Shares");
@@ -127,12 +164,25 @@ public class Driver {
 	{
 		System.out.println("Stocks and Shares");
 		System.out.println("---------");     
-		System.out.println("  1) Draw Card");
-		
+		System.out.println("  1) Draw Cards");
 		System.out.println("   3)  Save Game");
 		
 		int option = input.nextInt();
 		return option;	
+	}
+	
+	private int mainMenuThree()
+	{
+		System.out.println("Player" + playerNumber + "It's your Go");
+		System.out.println("---------");
+		System.out.println("  1) Buy Stocks");
+		System.out.println("  2) Sell Stocks");
+		System.out.println("  3) Check Current Stocks");
+		System.out.println("  4) Save Game");
+		System.out.println("  5) End Turn");
+		
+		int option = input.nextInt();
+		return option;
 	}
 
 
@@ -143,7 +193,8 @@ public class Driver {
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
 			String c = input.nextLine();
 			c = input.nextLine();
-			playerNames.add(c);
+			Player player = new Player(c, 80, false);
+			playerNames.add(player);
 
 		}
 	}
@@ -152,11 +203,9 @@ public class Driver {
 	
 	public String drawingCards(){
 		int i=1;
-        int check =0;
 		if (playerNames.size() > 0)
 		{
-			for (check = 0; check<=playerNames.size(); check ++)
-			for (String player: playerNames){
+			for (Player player: playerNames){
 				{
 				System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
 				String newStatus = input.nextLine();

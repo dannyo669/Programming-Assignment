@@ -1,11 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Files makes up the different types of cards
- */
 
-//Instance variables
 public class Cards {
 	private int[] prices = {2, 3, 4};
 	private String[] upOrDown={"Down: £", "Up: £"};
@@ -15,14 +11,13 @@ public class Cards {
 	private int index;
 	ArrayList<CardSetup> cards = new ArrayList<CardSetup>();
 	
-	//Class cards
 	public Cards(){
 		makeCards();
 		index=0;
 		randomGenerator = new Random();
 	}
 
-    //Creates the Bull and Bear cards
+
 	public void makeCards(){
 		idk = new CardSetup("Bull", "Up: £", 4);
 		cards.add(idk);
@@ -40,7 +35,6 @@ public class Cards {
 		}
 	}
 
-//Allows plater to check their cards
 public String checkCards(){
 	String str="";
 	for (int i=0; i<=25; i++){
@@ -49,22 +43,31 @@ public String checkCards(){
 	return str;
 }
 
-//Returns value of card
 public int getIndex(){
 	return index;
 }
 
-//Removes the card
 public void removeArray(int index){
 	cards.remove(index);
 }
 
-//Sets current card
 public CardSetup currentCard(){
 	return cards.get(index);
 }
 
-//Creates the card hub display
+public String currentCardType(int index2){
+	return cards.get(index).getCardType();
+}
+
+public int currentCardValue(int index){
+	return cards.get(index).getCardNumber();
+}
+
+public String currentUpOrDown(int index){
+	return cards.get(index).getUpOrDown();
+}
+
+	
 public String drawCard(){
 	this.index = randomGenerator.nextInt(cards.size());
 	String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 

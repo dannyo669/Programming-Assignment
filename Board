@@ -1,28 +1,24 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 
 public class Board {
-private int steel;
-private int store;
-private int motor;
-private int shipping;
-private int round;
-private Random randomGenerator;
-private String currentCard;
-private String currentChangeRate; // To display the value of the card drawn.
+private int steel =10;
+private int store = 10;
+private int motor = 10;
+private int shipping = 10;
+private int round = 1;
+
+
+
 
 
 public Board()
-{
-	this.steel=10;
-	this.store=10;
-	this.motor=10;
-	this.shipping=10;
-	this.round=10;
-	randomGenerator = new Random();
-	this.currentCard="";
-	this.currentChangeRate="";
+{	
+	this.round=1;
 }
+
+
 
 
 public String getCounterPositions()
@@ -30,12 +26,84 @@ public String getCounterPositions()
 	return toString();
 }
 
+public int getSteel()
+{
+	return steel;
+}
 
+public int getStore(){
+	return store;
+}
+
+public int getMotor(){
+	return motor;
+}
+
+public int getShipping(){
+	return shipping;
+}
+
+public void setSteelUp(int steel){
+	this.steel += steel; 
+	if(this.steel > 20){
+		this.steel=20;
+	}
+}
+
+public void setSteelDown(int steel){
+	this.steel -= steel;
+	if(this.steel <0){
+		this.steel=0;
+	}
+}
+
+public void setStoreUp(int store){
+	this.store += store;
+	 if(this.store > 20){
+		this.store=20;
+	}
+}
+
+public void setStoreDown(int store){
+	this.store -= store;
+	if(this.store <0){
+		this.store=0;
+	}
+}
+
+public void setShippingUp(int shipping){
+	this.shipping += shipping;
+	 if(this.shipping > 20){
+			this.shipping=20;
+		}
+}
+
+public void setShippingDown(int shipping){
+	this.shipping -= shipping;
+	if(this.shipping <0){
+		this.shipping=0;
+	}
+}
+
+public void setMotorDown(int motor){
+	this.motor -= motor;
+	if(this.motor <0){
+		this.steel=0;
+	}
+	
+}
+
+public void setMotorUp(int motor){
+	this.motor += motor;
+	if(this.steel > 20){
+		this.steel=20;
+	}
+}
 
 public String toString()
 {
-	return("The current price for motor is:    £" + steel + "The current price for store is:    £"
-+ store + "The current price for motor is:    £" + motor + "The current price for motor is:    £" + shipping);
+	return("The current price for steel is:    £" + steel + "    The current price for store is:    £"
++ store + "    The current price for motor is:    £" + motor + "    The current price for shipping is:    £" + shipping);
 }
 
 }

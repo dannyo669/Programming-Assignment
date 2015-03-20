@@ -2,12 +2,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-	private int playerBalance = 80;
 	private String playerName; 
+	private int playerBalance = 80;
+	private int numberOfSteelShares=0;
+	private int numberOfStoreShares=0;
+	private int numberOfMotorShares=0;
+	private int numberOfShippingShares=0;
+	private int steelShares = 28;
+	private int storeShares = 28;
+	private int motorShares = 28;
+	private int shippingShares = 28;
 
-	ArrayList<String> playerNames = new ArrayList<String>();
+	private Scanner input;
+	private Board board;
 
-	public Player(String playerName, int playerBalance)
+
+	ArrayList<Player> playerNames = new ArrayList<Player>();
+	private String[] stockTypes={"Store", "Shipping", "Motor", "Steel"};
+
+	public Player(String playerName, int playerBalance, int numberOfSteelShares, int numberOfStoreShares, int numberOfMotorShares,
+			int numberOfShippingShares)
 	{
 		if (playerName.length() < 11)
 		{
@@ -16,30 +30,209 @@ public class Player {
 		{
 			playerName.substring(0, 10);
 		}
-	}
-	
-	public Player() {
-		// for bug I think?????
-	}
 
-	public  void  setPlayerName (String playerName)
-	{
-		if (playerName.length() < 10)
-		{
+		if (playerBalance >=0){
+			this.playerBalance=playerBalance;
 		}
-		else
-		{
-			System.out.println("Player Name has to be under 10 characters");
+
+		this.numberOfMotorShares=numberOfMotorShares;
+		this.numberOfShippingShares=numberOfShippingShares;
+		this.numberOfSteelShares=numberOfSteelShares;
+		this.numberOfStoreShares=numberOfStoreShares;
+	}
+
+	public void buyShare(){
+		System.out.println("Which type of share would you like to buy?:  ");
+		int i = input.nextInt();
+		System.out.println("   1)  Motor");
+		System.out.println("   2)  Shipping");
+		System.out.println("   3)  Store");
+		System.out.println("   4)  Steel");
+		switch (i){
+		case 1:      System.out.println("how many motor shares would you like to buy?");
+		int a  = input.nextInt();
+		if (a<motorShares){
+			if (a>0 && a<6){
+				if(board.getMotor() != 0){
+					if (playerBalance>board.getMotor()*a){
+						playerBalance -= board.getMotor()*a;
+						numberOfMotorShares += a;
+						motorShares = motorShares - a;
+						System.out.println("You have bought" + a + " motor shares");
+					}
+					else{
+						System.out.println("Not Enough Money");
+					}
+
+				}
+			}
+			else{
+				System.out.println("Max number of shares per turn is 5");
+			}}
+		else{
+			System.out.println("Not enough shares left " + motorShares + " shares left");
 		}
-	}
+		break;
+		case 2:    System.out.println("how many shipping shares would you like to buy?");
+		int b  = input.nextInt();
+		if (b<shippingShares){
+			if (b>0 && b<6){
+				if(board.getShipping() != 0){
+					if (playerBalance>board.getShipping()*b){
+						playerBalance -= board.getShipping()*b;
+						numberOfMotorShares += b;
+						shippingShares = shippingShares - b;
+						System.out.println("You have bought" + b + " shipping shares");
+					}
+					else{
+						System.out.println("Not Enough Money");
+					}
 
-	public String getPlayerName() {
-		return playerName;
-	}
-	
-	public int getPlayerBalance(){
-		return playerBalance;
+				}
+			}
+			else{
+				System.out.println("Max number of shares per turn is 5");
+			}}
+		else{
+			System.out.println("Not enough shares left " + shippingShares + " shares left");
+		}
+
+		break;
+		case 3:	System.out.println("how many store shares would you like to buy?");
+		int c  = input.nextInt();
+		if (c<storeShares){
+			if (c>0 && c<6){
+				if(board.getStore() != 0){
+					if (playerBalance>board.getStore()*c){
+						playerBalance -= board.getStore()*c;
+						numberOfStoreShares += c;
+						storeShares = storeShares - c;
+						System.out.println("You have bought" + c + " store shares");
+					}
+					else{
+						System.out.println("Not Enough Money");
+					}
+
+				}
+			}
+			else{
+				System.out.println("Max number of shares per turn is 5");
+			}}
+		else{
+			System.out.println("Not enough shares left " + storeShares + " shares left");
+		}
+
+
+		break;
+		case 4:	System.out.println("how many steel shares would you like to buy?");
+		int d  = input.nextInt();
+		if (d<steelShares){
+			if (d>0 && d<6){
+				if(board.getSteel() != 0){
+					if (playerBalance>board.getSteel()*d){
+						playerBalance -= board.getSteel()*d;
+						numberOfSteelShares += d;
+						steelShares = steelShares - d;
+						System.out.println("You have bought" + d + " steel shares");
+					}
+					else{
+						System.out.println("Not Enough Money");
+					}
+
+				}
+			}
+			else{
+				System.out.println("Max number of shares per turn is 5");
+			}}
+		else{
+			System.out.println("Not enough shares left " + steelShares + " shares left");
+		}
+		break;
+		}}
+
+	public void sellShare(){
+		System.out.println("Which type of share would you like to sell?:  ");
+		int i = input.nextInt();
+		System.out.println("   1)  Motor");
+		System.out.println("   2)  Shipping");
+		System.out.println("   3)  Store");
+		System.out.println("   4)  Steel");
+		switch (i){
+		case 1:      System.out.println("how many motor shares would you like to sell?");
+		             int a  = input.nextInt();
+		if (numberOfMotorShares > a){
+			if (a>0 && a<6){
+				if(board.getMotor() != 0){
+						playerBalance += board.getMotor()*a;
+						numberOfMotorShares -= a;
+						motorShares = motorShares + a;
+						System.out.println("You have sold" + a + " motor shares");
+					}
+					else if (a % 5 == 0)
+					{
+						playerBalance += board.getMotor()*a;
+						numberOfMotorShares -= a;
+						motorShares = motorShares + a;
+						System.out.println("You have sold" + a + " motor shares");
+					}
+					else {
+						System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
+				}
+			}
+			else {
+				System.out.println("You do not have enough shares. You currently have " + numberOfMotorShares + "motor shares");
+			}
+			}
+			else{
+				System.out.println("Max number of shares per turn is 5");
+			}
+		break;
+		}}
+
+
+		public Player() {
+			// for bug I think?????
+		}
+
+		public  void  setPlayerName (String playerName)
+		{
+			if (playerName.length() < 10)
+			{
+			}
+			else
+			{
+				System.out.println("Player Name has to be under 10 characters");
+			}
+		}
+
+		public String getPlayerName() {
+			return playerName;
+		}
+
+		public int getPlayerBalance(){
+			return playerBalance;
+
+		}
+
+		public int getSteelShares(){
+			return numberOfSteelShares;
+		}
+
+		public int getStoreShares(){
+			return numberOfStoreShares;
+		}
+
+		public int getShippingShares(){
+			return numberOfShippingShares;
+		}
+
+		public int getMotorShares(){
+			return numberOfMotorShares;
+		}
+
+		public void setSteelSharesBuying(){
+			numberOfSteelShares+=
+		}
+
 
 	}
-
-}

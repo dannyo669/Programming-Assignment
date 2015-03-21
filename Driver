@@ -12,15 +12,18 @@ public class Driver {
 	private String str="";
 	private int playerNumber;
 	ArrayList<Player> playerNames = new ArrayList<Player>();
+	private int endingRound = 0;
+	private Player player;
 
 	public Driver()
 	{
 		input = new Scanner(System.in);
 		board = new Board();
 		cards = new Cards();
+		player = new Player();
 		cardSetup = new CardSetup(null, null, 0);
 		i=0;
-		playerNumber = 1;
+		playerNumber = 0;
 		numberOfPlayers();
 	}
 
@@ -57,6 +60,7 @@ public class Driver {
 	private void run()
 	{
 
+		if (board.getRound() < 12){
 		int option = mainMenu();
 		while (option != 0)
 		{
@@ -86,6 +90,30 @@ public class Driver {
 		System.out.println("Exiting... bye");
 		System.exit(0);
 	}
+		else{
+			int i =0;
+			for (Player player: playerNames){
+				playerNames.get(i).sellShareMotor(player.getMotorShares());
+				playerNames.get(i).sellShareSteel(player.getSteelShares());
+				playerNames.get(i).sellShareStore(player.getStoreShares());
+				playerNames.get(i).sellShareShipping(player.getShippingShares());
+				i++;
+			}
+			if (playerNames.size() > 0)
+		      {
+				int a=0;
+		         Player richest = playerNames.get(0);
+		         for (Player player : playerNames)
+		         { 
+		            if (playerNames.get(a).getPlayerBalance() > richest.getPlayerBalance() )  
+		                richest = playerNames.get(a);
+		                a++;
+		         }
+		         System.out.println("The winner is Player" + richest);
+		      }
+		}
+	}
+	
 
 	private void firstMenu()
 	{
@@ -95,12 +123,22 @@ public class Driver {
 
 			switch (option)
 			{
-			case 1:    drawingCards(); 
+			case 1:    if (endingRound == 0){
+				           drawingCards(); 
+			              }
+					  else {
+						  System.out.println("Cards have already been drawn!");
+					  }
 			break;
 		//	case 2:    load
 			case 3:    System.out.println(board.toString());
 			break;
-			case 4:    secondMenu();
+			case 4:    if (endingRound == 1)
+				       { secondMenu();
+				       }
+			      else {
+				       System.out.println("Must draw cards first!");
+				       }
 			break;
 			}
 			System.out.println("\nPress any key to continue...");
@@ -131,9 +169,21 @@ public class Driver {
 			break;
 			case 4:    //Save Game
 			break;
-			case 5:    mainMenu();
+			case 5:   System.out.println(playerNames.get(playerNumber).getPlayerBalance());
+			break;
+			case 6:    mainMenu();
 			           playerNumber++;
 			           playerNames.get(index).setIndex();
+			           System.out.println("Player" + playerNumber + " are you ready to end the round?");
+			           String apple = input.nextLine();
+			   	       if (apple.toLowerCase().equals("y"))
+			   	    		   {
+			           board.setRound();
+			   	       }
+			   	       else{
+			   	    	   mainMenuThree();
+			   	       }
+			
 			break;
 			
 			}
@@ -143,7 +193,7 @@ public class Driver {
 
 			//clear the terminal window and display the main menu again
 			System.out.println("\f");
-			option = mainMenuTwo();
+			option = mainMenuThree();
 		}   
 		System.out.println("Exiting... bye");
 		System.exit(0);
@@ -167,6 +217,8 @@ public class Driver {
 		System.out.println("---------");     
 		System.out.println("  1) Draw Cards");
 		System.out.println("   3)  Save Game");
+		System.out.println("   4)  Start Buying/Selling Phase");
+		
 		
 		int option = input.nextInt();
 		return option;	
@@ -180,7 +232,8 @@ public class Driver {
 		System.out.println("  2) Sell Stocks");
 		System.out.println("  3) Check Current Stocks");
 		System.out.println("  4) Save Game");
-		System.out.println("  5) End Turn");
+		System.out.println("  5) Check Current Balance");
+		System.out.println("  6) End Turn");
 		
 		int option = input.nextInt();
 		return option;
@@ -271,6 +324,7 @@ public class Driver {
 				}
 				}
 				cards.makeCards();
+				endingRound = 1;
 			}
 		}
 

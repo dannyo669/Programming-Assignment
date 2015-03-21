@@ -78,6 +78,33 @@ public class Driver {
 				}
 				else System.out.println("Add players first");
 			break;
+			case 5: 	System.out.println("Rules of Stocks and Shares" + "\n" +"\n"
+					+ "Four Types of Stock Commodity."+ "\n" + "There are 28 shares for each Commodity." + "\n" + "Each commodity can go up and down on the stock market." + "\n" 
+					+  "\n" +"26 Cards" + "\n" + "1 Bear Card (all four commodities down £4)" + "\n" + "1 Bull Card (all four commodities up £4)" + "\n" + "Each commodity has six cards." + "\n" + "Down £4, Down £3, Down £2, Up £2, Up £3 and Up £4." +"\n" + "The “Share Price Indicator” on Board (max price is £20 and min price is £0)" +"\n" +"\n" 
+					+ "How to play" +"\n" +"\n" + "There must be at least 3 players and no more than 6" + "\n" + "The object is, by buying or selling shares, to be the player with the most money at the end of the game" + "\n" 
+					+ "There are four kinds of shares.  During the game the values of the shares rise and fall according to the cards which affect them." + "\n"
+					+ "One card is dealt randomly to each player.  Players in turn decide whether to buy or sell shares by looking at their card and by drawing deductions from what other players’ have done." + "\n" + "\n"
+                    + "After the buying and selling is finished, the players expose their cards" +"\n" + "and the value of the shares are moved up or down on the “Share Price Indicator” board in accordance with the instructions on the exposed cards." +"\n"
+					+ "A single card each is again dealt and buying and selling of shares is done at the new values on the board.  There are 12 rounds of buying and selling in the game." + "\n"
+					+ "Players consequently make profits and losses throughout the game, depending on their skill in selling shares at a higher price than they paid for them." + "\n"
+					+ "The winner is the player who ends the game with the most money." +"\n" +"\n"
+					+ "At the start of the game" +"\n"
+					+ "Each player gets £80 of currency" +"\n"
+					+ "The share price for each commodity is set to £10 on the “Share Price Indicator” board." +"\n" +"\n" 
+					+ "Round 1" +"\n"
+					+ "Each player is dealt a card randomly (in each round only one card can appear once). This card is kept secret from other players." + "\n"
+					+ "Each player takes their turn deciding whether to buy shares or pass." +"\n" + "A player can buy up to or including 5 of any kind of commodity.  If they want more than 5, of a kind, s/he must by multiples of 5 e.g. 10, 15, 20, etc.  The player must have enough money to buy the shares and there must be enough shares left to buy." +"\n" 	
+					+ "If a player decides to buy shares, they are £10 each in the first round.  The number of shares for each commodity they buy are deducted from the total of available shares for that commodity." + "\n" + "\n"
+					+ "Scoring at the end of Round 1" +"\n"
+					+ "When each player has taken their turn, each player’s card is displayed and the values of the shares increase or decrease based on the values of the cards. Note: A bear card, all down £4.  A bull card, all up £4." + "\n" + "\n" 
+					+ "Subsequent Rounds" +"\n" 
+					+ "The play and scoring for all subsequent rounds are exactly the same as for the first round, except that, in addition to buying, a player who holds shares can sell them as the price shown on the “Share Price Indicator” board." + "\n" 
+					+ "Shares cannot go higher than £20 or drop below £0.  Shares cannot be bought or sold at £0." +"\n" +"\n" 
+					+ "End of Game" +"\n"
+					+ "The game ends when 12 rounds have been played." +"\n" 
+					+ "All players now sell their shares according to the values on the “Share Price Indicator” board.  This amount is added to their existing cash."  +"\n"
+					+ "The winner is determined as the player with the most money!");
+
 			}
 			System.out.println("\nPress any key to continue...");
 			input.nextLine();
@@ -206,6 +233,7 @@ public class Driver {
 		System.out.println("  2) Load Game");
 		System.out.println("  3)  Get Current Stock Prices");
 		System.out.println("  4) Start Game");
+		System.out.println("  5) Rules");
 		System.out.println("  0) Quit Game");
 		int option = input.nextInt();
 		return option;	
@@ -390,5 +418,3 @@ public class Driver {
 
 	}
 }
-
-

@@ -5,10 +5,11 @@ public class Driver {
 
 	private Scanner input;
 	private Board board;
-	private Player player;
 	private Cards cards;
 	private CardSetup cardSetup;
 	int i;
+	private int index;
+	private String str="";
 	private int playerNumber;
 	ArrayList<Player> playerNames = new ArrayList<Player>();
 
@@ -16,7 +17,6 @@ public class Driver {
 	{
 		input = new Scanner(System.in);
 		board = new Board();
-		player = new Player();
 		cards = new Cards();
 		cardSetup = new CardSetup(null, null, 0);
 		i=0;
@@ -56,10 +56,7 @@ public class Driver {
 
 	private void run()
 	{
-		if (round == 12){
-			do shit
-		}
-		else{
+
 		int option = mainMenu();
 		while (option != 0)
 		{
@@ -103,6 +100,8 @@ public class Driver {
 		//	case 2:    load
 			case 3:    System.out.println(board.toString());
 			break;
+			case 4:    secondMenu();
+			break;
 			}
 			System.out.println("\nPress any key to continue...");
 			input.nextLine();
@@ -118,22 +117,24 @@ public class Driver {
 	
 	private void secondMenu()
 	{
-		int option = mainMenuTwo();
+		int option = mainMenuThree();
 		while (option != 0)
 		{
 
 			switch (option)
 			{
-			case 1:    //buy stocks 
+			case 1:    buyShares();
 			break;
-			case 2:    //sell stocks
+			case 2:    sellShares();
 			break;
-			case 3:    //check current stocks
+			case 3:    System.out.println(playerNames.get(index).getAllShares());
 			break;
 			case 4:    //Save Game
 			break;
 			case 5:    mainMenu();
 			           playerNumber++;
+			           playerNames.get(index).setIndex();
+			break;
 			
 			}
 			System.out.println("\nPress any key to continue...");
@@ -193,7 +194,7 @@ public class Driver {
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
 			String c = input.nextLine();
 			c = input.nextLine();
-			Player player = new Player(c, 80, false);
+			Player player = new Player(c);
 			playerNames.add(player);
 
 		}
@@ -210,8 +211,7 @@ public class Driver {
 				System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
 				String newStatus = input.nextLine();
 				newStatus=input.nextLine(); // bug?
-				newStatus.toLowerCase();
-				if (newStatus.equals("y"))
+				if (newStatus.toLowerCase().equals("y"))
 				{
 					System.out.println(cards.drawCard());
 					int index = cards.getIndex();
@@ -275,6 +275,65 @@ public class Driver {
 		}
 
 		return "Need more players";
+	}
+	
+	public void buyShares(){
+		index=0;
+		System.out.println("Which type of share would you like to buy?:  ");
+		System.out.println("   1)  Motor");
+		System.out.println("   2)  Shipping");
+		System.out.println("   3)  Store");
+		System.out.println("   4)  Steel");
+		int i = input.nextInt();
+		switch (i){
+		case 1:      System.out.println("how many motor shares would you like to buy?");
+					 int a  = input.nextInt();
+					 playerNames.get(index).buyShareMotor(a);
+		break;
+		case 2:      System.out.println("how many shipping shares would you like to buy?");
+					 int b  = input.nextInt();
+					 playerNames.get(index).buyShareShipping(b);
+		break;
+		case 3:	    System.out.println("how many store shares would you like to buy?");
+					int c  = input.nextInt();
+					playerNames.get(index).buyShareStore(c);
+		break;
+		case 4:       System.out.println("how many steel shares would you like to buy?");
+					  int d  = input.nextInt();
+					  playerNames.get(index).buySteelShares(d);
+		break;
+
+		}
+	}
+	
+	public void sellShares(){
+		int index =0;
+		System.out.println("Which type of share would you like to sell?:  ");
+		int i = input.nextInt();
+		System.out.println("   1)  Motor");
+		System.out.println("   2)  Shipping");
+		System.out.println("   3)  Store");
+		System.out.println("   4)  Steel");
+		switch (i){
+		case 1:      System.out.println("how many motor shares would you like to sell?");
+					 int a  = input.nextInt();
+					 playerNames.get(index).sellShareMotor(a);
+		break;
+		case 2:      System.out.println("how many shipping shares would you like to sell?");
+					 int b  = input.nextInt();
+					 playerNames.get(index).sellShareMotor(b);
+		break;
+		case 3:	    System.out.println("how many store shares would you like to sell?");
+					int c  = input.nextInt();
+					playerNames.get(index).sellShareStore(c);
+		break;
+		case 4:       System.out.println("how many steel shares would you like to sell?");
+					  int d  = input.nextInt();
+					  playerNames.get(index).sellShareSteel(d);
+		break;
+
+		}
+
 	}
 }
 

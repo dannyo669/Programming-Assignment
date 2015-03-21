@@ -12,50 +12,37 @@ public class Player {
 	private int storeShares = 28;
 	private int motorShares = 28;
 	private int shippingShares = 28;
+	private int index = 0;
 
 	private Scanner input;
 	private Board board;
 
 
-	ArrayList<Player> playerNames = new ArrayList<Player>();
-	private String[] stockTypes={"Store", "Shipping", "Motor", "Steel"};
-
-	public Player(String playerName, int playerBalance, int numberOfSteelShares, int numberOfStoreShares, int numberOfMotorShares,
-			int numberOfShippingShares)
+	public Player(String playerName)
 	{
 		if (playerName.length() < 11)
 		{
+			this.playerName=playerName;
 		}
 		else
 		{
-			playerName.substring(0, 10);
+			this.playerName=playerName.substring(0, 10);
 		}
 
-		if (playerBalance >=0){
-			this.playerBalance=playerBalance;
-		}
-
-		this.numberOfMotorShares=numberOfMotorShares;
-		this.numberOfShippingShares=numberOfShippingShares;
-		this.numberOfSteelShares=numberOfSteelShares;
-		this.numberOfStoreShares=numberOfStoreShares;
+		
+		board = new Board();
+	}
+	
+	public Player(){
+		board = new Board();
 	}
 
-	public void buyShare(){
-		System.out.println("Which type of share would you like to buy?:  ");
-		int i = input.nextInt();
-		System.out.println("   1)  Motor");
-		System.out.println("   2)  Shipping");
-		System.out.println("   3)  Store");
-		System.out.println("   4)  Steel");
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to buy?");
-		int a  = input.nextInt();
-		if (a<motorShares){
+	public void buyShareMotor(int a){
+			if (a<motorShares){
 			if (a>0 && a<6){
-				if(board.getMotor() != 0){
+				if(board.getMotor() > 0){
 					if (playerBalance>board.getMotor()*a){
-						playerBalance -= board.getMotor()*a;
+						playerBalance -=board.getMotor()*a;
 						numberOfMotorShares += a;
 						motorShares = motorShares - a;
 						System.out.println("You have bought" + a + " motor shares");
@@ -72,15 +59,16 @@ public class Player {
 		else{
 			System.out.println("Not enough shares left " + motorShares + " shares left");
 		}
-		break;
-		case 2:    System.out.println("how many shipping shares would you like to buy?");
-		int b  = input.nextInt();
+	}
+	
+	
+  public void buyShareShipping(int b){
 		if (b<shippingShares){
 			if (b>0 && b<6){
 				if(board.getShipping() != 0){
 					if (playerBalance>board.getShipping()*b){
-						playerBalance -= board.getShipping()*b;
-						numberOfMotorShares += b;
+						playerBalance -=board.getShipping()*b;
+						numberOfShippingShares += b;
 						shippingShares = shippingShares - b;
 						System.out.println("You have bought" + b + " shipping shares");
 					}
@@ -96,15 +84,24 @@ public class Player {
 		else{
 			System.out.println("Not enough shares left " + shippingShares + " shares left");
 		}
+  }
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
 
-		break;
-		case 3:	System.out.println("how many store shares would you like to buy?");
-		int c  = input.nextInt();
+  public void buyShareStore(int c){
 		if (c<storeShares){
 			if (c>0 && c<6){
 				if(board.getStore() != 0){
 					if (playerBalance>board.getStore()*c){
-						playerBalance -= board.getStore()*c;
+						playerBalance -=board.getStore()*c;
 						numberOfStoreShares += c;
 						storeShares = storeShares - c;
 						System.out.println("You have bought" + c + " store shares");
@@ -121,16 +118,15 @@ public class Player {
 		else{
 			System.out.println("Not enough shares left " + storeShares + " shares left");
 		}
+  }
 
 
-		break;
-		case 4:	System.out.println("how many steel shares would you like to buy?");
-		int d  = input.nextInt();
+    public void buySteelShares(int d){
 		if (d<steelShares){
 			if (d>0 && d<6){
 				if(board.getSteel() != 0){
 					if (playerBalance>board.getSteel()*d){
-						playerBalance -= board.getSteel()*d;
+						playerBalance -=board.getSteel()*d;
 						numberOfSteelShares += d;
 						steelShares = steelShares - d;
 						System.out.println("You have bought" + d + " steel shares");
@@ -147,30 +143,22 @@ public class Player {
 		else{
 			System.out.println("Not enough shares left " + steelShares + " shares left");
 		}
-		break;
-		}}
+    }
+		
+	
 
-	public void sellShare(){
-		System.out.println("Which type of share would you like to sell?:  ");
-		int i = input.nextInt();
-		System.out.println("   1)  Motor");
-		System.out.println("   2)  Shipping");
-		System.out.println("   3)  Store");
-		System.out.println("   4)  Steel");
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to sell?");
-		             int a  = input.nextInt();
+	public void sellShareMotor(int a){
 		if (numberOfMotorShares > a){
 			if (a>0 && a<6){
 				if(board.getMotor() != 0){
-						playerBalance += board.getMotor()*a;
+					    playerBalance +=board.getMotor()*a;
 						numberOfMotorShares -= a;
 						motorShares = motorShares + a;
 						System.out.println("You have sold" + a + " motor shares");
 					}
 					else if (a % 5 == 0)
 					{
-						playerBalance += board.getMotor()*a;
+					    playerBalance +=board.getMotor()*a;
 						numberOfMotorShares -= a;
 						motorShares = motorShares + a;
 						System.out.println("You have sold" + a + " motor shares");
@@ -186,13 +174,96 @@ public class Player {
 			else{
 				System.out.println("Max number of shares per turn is 5");
 			}
-		break;
-		}}
-
-
-		public Player() {
-			// for bug I think?????
+	}
+		
+	public void sellShareShipping(int b){
+		if (numberOfShippingShares > b){
+			if (b>0 && b<6){
+				if(board.getShipping() != 0){
+				    playerBalance +=board.getShipping()*b;
+					numberOfShippingShares -= b;
+					shippingShares = shippingShares + b;
+					System.out.println("You have sold" + b + " shipping shares");
+				}
+				else if (b % 5 == 0)
+				{
+				    playerBalance +=board.getShipping()*b;
+					numberOfShippingShares -= b;
+					shippingShares = shippingShares + b;
+					System.out.println("You have sold" + b + " shipping shares");
+				}
+				else {
+					System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
+				}
+			}
+			else {
+				System.out.println("You do not have enough shares. You currently have " + numberOfShippingShares + "shipping shares");
+			}
 		}
+		else{
+			System.out.println("Max number of shares per turn is 5");
+		}}
+	
+		
+		public void sellShareStore(int c){
+		if (numberOfStoreShares > c){
+			if (c>0 && c<6){
+				if(board.getStore() != 0){
+				    playerBalance +=board.getStore()*c;
+					numberOfStoreShares -= c;
+					storeShares = storeShares + c;
+					System.out.println("You have sold" + c + " store shares");
+				}
+				else if (c % 5 == 0)
+				{
+				    playerBalance +=board.getStore()*c;
+					numberOfStoreShares -= c;
+					storeShares = storeShares + c;
+					System.out.println("You have sold" + c + " store shares");
+				}
+				else {
+					System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
+				}
+			}
+			else {
+				System.out.println("You do not have enough shares. You currently have " + numberOfStoreShares + "store shares");
+			}
+		}
+		else{
+			System.out.println("Max number of shares per turn is 5");
+		}
+		}
+		
+		
+		public void sellShareSteel(int d){
+		if (numberOfSteelShares > d){
+			if (d>0 && d<6){
+				if(board.getSteel() != 0){
+				    playerBalance +=board.getSteel()*d;
+					numberOfSteelShares -= d;
+					steelShares = steelShares + d;
+					System.out.println("You have sold" + d + " steel shares");
+				}
+				else if (d % 5 == 0)
+				{
+					playerBalance +=board.getSteel()*d;
+					numberOfSteelShares -= d;
+					steelShares = steelShares + d;
+					System.out.println("You have sold" + d + " steel shares");
+				}
+				else {
+					System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
+				}
+			}
+			else {
+				System.out.println("You do not have enough shares. You currently have " + numberOfSteelShares + "steel shares");
+			}
+		}
+		else{
+			System.out.println("Max number of shares per turn is 5");
+		}
+		}
+
 
 		public  void  setPlayerName (String playerName)
 		{
@@ -230,9 +301,13 @@ public class Player {
 			return numberOfMotorShares;
 		}
 
-		public void setSteelSharesBuying(){
-			numberOfSteelShares+=
+		public String getAllShares(){
+			return ("Motor: " + numberOfMotorShares + "\n" + "Shipping: " + numberOfShippingShares + "\n" + "Store: " + 
+		            numberOfStoreShares + "\n" + "Steel: " + numberOfSteelShares + "\n");
 		}
+		
 
-
+        public void setIndex(){
+        	this.index++;
+        }
 	}

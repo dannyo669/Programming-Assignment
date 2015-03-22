@@ -1,3 +1,7 @@
+/**
+ * Creates a UI display for Stocks and Shares
+ */
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,430 +10,431 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
-
+ 
 public class Driver {
-
-	private Scanner input;
-	private Board board;
-	private Cards cards;
-	int i;
-	private int index;
-	private int playerNumber;
-	ArrayList<Player> playerNames = new ArrayList<Player>();
-	private int endingRound = 0;
-
-	public Driver() throws ClassNotFoundException, IOException
-	{
-		input = new Scanner(System.in);
-		board = new Board(10,10,10,10,1);
-		cards = new Cards();
-		i=0;
-		playerNumber = 0;
-		numberOfPlayers();
-	}
-
-	public static void main(String[] argvs) throws ClassNotFoundException, IOException{
-		Driver driver = new Driver();
-	}
-
-
-
-
-	private void numberOfPlayers() throws ClassNotFoundException, IOException
-	{
-		System.out.println("Enter the number of players: ");
-		int i = input.nextInt();
-		if (i>=3 && i < 7)
-		{
-			this.i=i;
-			run();
-		}
-		else
-		{
-			System.out.println("Invalid Number of Players, has to be between 3 and 6");
-			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine(); 
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			numberOfPlayers();
-		}
-
-
-	}
-
-	private void run() throws ClassNotFoundException, IOException
-	{
-
-		if (board.getRound() < 12){
-		int option = mainMenu();
-		while (option != 0)
-		{
-
-			switch (option)
-			{
-			case 1:    addPlayer();
-			break; 
-			case 2:  load();
-			break;
-			case 3:    System.out.println(board.toString());
-			break;
-			case 4:    
-				if (playerNames.size() > 0){
-					firstMenu();
-				}
-				else System.out.println("Add players first");
-			break;
-			case 5:    System.out.println(board.rules());
-			break;
-			
-			}
-			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
-
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			option = mainMenu();
-		}   
-		System.out.println("Exiting... bye");
-		System.exit(0);
-	}
-		else{
-			int i =0;
-			for (Player player: playerNames){
-				playerNames.get(i).sellShareMotor(player.getMotorShares());
-				playerNames.get(i).sellShareSteel(player.getSteelShares());
-				playerNames.get(i).sellShareStore(player.getStoreShares());
-				playerNames.get(i).sellShareShipping(player.getShippingShares());
-				i++;
-			}
-			if (playerNames.size() > 0)
-		      {
-				int a=0;
-		         Player richest = playerNames.get(0);
-		         for (Player player : playerNames)
-		         { 
-		            if (playerNames.get(a).getPlayerBalance() > richest.getPlayerBalance() )  
-		                richest = playerNames.get(a);
-		                a++;
-		         }
-		         System.out.println("The winner is Player" + richest);
-		      }
-		}
-	}
-	
-
-	private void firstMenu() throws ClassNotFoundException, IOException
-	{
-		int option = mainMenuTwo();
-		while (option != 0)
-		{
-
-			switch (option)
-			{
-			case 1:    if (endingRound == 0){
-				           drawingCards(); 
-			              }
-					  else {
-						  System.out.println("Cards have already been drawn!");
-					  }
-			break;
-			case 2:    saveLoad();
-			break;
-			case 3:    if (endingRound == 1)
-				       { secondMenu();
-				       }
-			      else {
-				       System.out.println("Must draw cards first!");
-				       }
-			break;
-			}
-			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
-
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			option = mainMenuTwo();
-		}   
-		System.out.println("Exiting... bye");
-		System.exit(0);
-	}
-	
-	private void secondMenu() throws ClassNotFoundException, IOException
-	{
-		int option = mainMenuThree();
-		while (option != 0)
-		{
-
-			switch (option)
-			{
-			case 1:    buyShares();
-			break;
-			case 2:    sellShares();
-			break;
-			case 3:    System.out.println(playerNames.get(index).getAllShares());
-			break;
-			case 4:    saveLoad();
-			break;
-			case 5:   System.out.println(playerNames.get(playerNumber).getPlayerBalance());
-			break;
-			case 6:    mainMenu();
-			           playerNumber++;
-			           playerNames.get(index).setIndex();
-			           System.out.println("Player" + playerNumber + " are you ready to end the round?");
-			           String apple = input.nextLine();
-			   	       if (apple.toLowerCase().equals("y"))
-			   	    		   {
-			           board.setRound();
-			           endingRound=0;
-			   	       }
-			   	       else{
-			   	    	   mainMenuThree();
-			   	       }
-			
-			break;
-			
-			}
-			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
-
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			option = mainMenuThree();
-		}   
-		System.out.println("Exiting... bye");
-		System.exit(0);
-	}
-	private int mainMenu()     
-	{ 
-		System.out.println("Welcome to Stocks and Shares");
-		System.out.println("---------");     
-		System.out.println("  1) Add Player Names");    
-		System.out.println("  2) Load Game");
-		System.out.println("  3)  Get Current Stock Prices");
-		System.out.println("  4) Start Game");
-		System.out.println("  5) Rules");
-		System.out.println("  0) Quit Game");
-		int option = input.nextInt();
-		return option;	
-	}
-	
-	private int mainMenuTwo()
-	{
-		System.out.println("Stocks and Shares");
-		System.out.println("---------");     
-		System.out.println("  1) Draw Cards");
-		System.out.println("   2)  Save Game");
-		System.out.println("   3)  Start Buying/Selling Phase");
-		System.out.println("   0)  Quit Game");
-		int option = input.nextInt();
-		return option;	
-	}
-	
-	private int mainMenuThree()
-	{
-		System.out.println("Player" + playerNumber + "It's your Go");
-		System.out.println("---------");
-		System.out.println("  1) Buy Stocks");
-		System.out.println("  2) Sell Stocks");
-		System.out.println("  3) Check Current Stocks");
-		System.out.println("  4) Save Game");
-		System.out.println("  5) Check Current Balance");
-		System.out.println("  6) End Turn");
-		int option = input.nextInt();
-		return option;
-	}
-
-
-	private void addPlayer()  
-	{
-		for(int b=0; b<i; b++)
-		{
-			System.out.println("Player Number " + (b+1) + " enter your name: ");
-			String c = input.next();
-			Player player = new Player(c);
-			playerNames.add(player);
-
-		}
-	}
-
-
-	
-	public String drawingCards(){
-		int i=1;
-		if (playerNames.size() > 0)
-		{
-			for (Player player: playerNames){
-				{
-				System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
-				String newStatus = input.next();
-			//	newStatus=input.nextLine(); // bug?
-				if (newStatus.toLowerCase().equals("y"))
-				{
-					System.out.println(cards.drawCard());
-					int index = cards.getIndex();
-					if (cards.currentCardType(index).equals("Store")){
-						if (cards.currentUpOrDown(index).equals("Up: £")){
-							board.setStoreUp(cards.currentCardValue(index));
-						}
-					
-					    else {
-							board.setStoreDown(cards.currentCardValue(index));
-						}
-					}
-
-						if (cards.currentCardType(index).equals("Steel")){
-							if (cards.currentUpOrDown(index).equals("Up: £")){
-								board.setSteelUp(cards.currentCardValue(index));
-							}
-							else {
-								board.setSteelDown(cards.currentCardValue(index));
-							}
-						}
-
-							if (cards.currentCardType(index).equals("Shipping")){
-								if (cards.currentUpOrDown(index).equals("Up: £")){
-									board.setShippingUp(cards.currentCardValue(index));
-								}
-								else {
-									board.setShippingDown(cards.currentCardValue(index));
-								}
-							}
-							
-								if (cards.currentCardType(index).equals("Motor")){
-									if (cards.currentUpOrDown(index).equals("Up: £")){
-										board.setMotorUp(cards.currentCardValue(index));
-									}
-									else {
-										board.setMotorDown(cards.currentCardValue(index));
-									}	
-									
-								}
-								if (cards.currentCardType(index).equals("Bear")){
-									board.setMotorDown(cards.currentCardValue(index));
-									board.setShippingDown(cards.currentCardValue(index));
-									board.setStoreDown(cards.currentCardValue(index));
-									board.setSteelDown(cards.currentCardValue(index));
-								}
-								
-								if (cards.currentCardType(index).equals("Bull")){
-									board.setMotorUp(cards.currentCardValue(index));
-									board.setShippingUp(cards.currentCardValue(index));
-									board.setStoreUp(cards.currentCardValue(index));
-									board.setSteelUp(cards.currentCardValue(index));
-								}
-								   cards.removeArray(cards.getIndex());
-									i++;	
-							
-				}
-				}
-				cards.makeCards();
-				endingRound = 1;
-			}
-		}
-
-		return "Need more players";
-	}
-	
-	public void buyShares(){
-		index=0;
-		System.out.println("Which type of share would you like to buy?:  ");
-		System.out.println("   1)  Motor");
-		System.out.println("   2)  Shipping");
-		System.out.println("   3)  Store");
-		System.out.println("   4)  Steel");
-		int i = input.nextInt();
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to buy?");
-					 int a  = input.nextInt();
-					 playerNames.get(index).buyShareMotor(a);
-		break;
-		case 2:      System.out.println("how many shipping shares would you like to buy?");
-					 int b  = input.nextInt();
-					 playerNames.get(index).buyShareShipping(b);
-		break;
-		case 3:	    System.out.println("how many store shares would you like to buy?");
-					int c  = input.nextInt();
-					playerNames.get(index).buyShareStore(c);
-		break;
-		case 4:       System.out.println("how many steel shares would you like to buy?");
-					  int d  = input.nextInt();
-					  playerNames.get(index).buySteelShares(d);
-		break;
-
-		}
-	}
-	
-	public void sellShares(){
-		int index =0;
-		System.out.println("Which type of share would you like to sell?:  ");
-		int i = input.nextInt();
-		System.out.println("   1)  Motor");
-		System.out.println("   2)  Shipping");
-		System.out.println("   3)  Store");
-		System.out.println("   4)  Steel");
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to sell?");
-					 int a  = input.nextInt();
-					 playerNames.get(index).sellShareMotor(a);
-		break;
-		case 2:      System.out.println("how many shipping shares would you like to sell?");
-					 int b  = input.nextInt();
-					 playerNames.get(index).sellShareMotor(b);
-		break;
-		case 3:	    System.out.println("how many store shares would you like to sell?");
-					int c  = input.nextInt();
-					playerNames.get(index).sellShareStore(c);
-		break;
-		case 4:       System.out.println("how many steel shares would you like to sell?");
-					  int d  = input.nextInt();
-					  playerNames.get(index).sellShareSteel(d);
-		break;
-
-		}
-
-	}
-	public void saveLoad() throws IOException, ClassNotFoundException
-	{
-		//Create new board for testing
+ 
+        private Scanner input;
+        private Board board;
+        private Cards cards;
+        int i;
+        private int index;
+        private int playerNumber;
+        ArrayList<Player> playerNames = new ArrayList<Player>();
+        private int endingRound = 0;
+ 
+        public Driver() throws ClassNotFoundException, IOException
+        {
+                input = new Scanner(System.in);
+                board = new Board(10,10,10,10,1);
+                cards = new Cards();
+                i=0;
+                playerNumber = 0;
+                numberOfPlayers();
+        }
+ 
+        public static void main(String[] argvs) throws ClassNotFoundException, IOException{
+                Driver driver = new Driver();
+        }
+ 
+ 
+ 
+ 
+        private void numberOfPlayers() throws ClassNotFoundException, IOException
+        {
+                System.out.println("Enter the number of players: ");
+                int i = input.nextInt();
+                if (i>=3 && i < 7)
+                {
+                        this.i=i;
+                        run();
+                }
+                else
+                {
+                        System.out.println("Invalid Number of Players, has to be between 3 and 6");
+                        System.out.println("\nPress any key to continue...");
+                        input.nextLine();
+                        input.nextLine();
+                        //clear the terminal window and display the main menu again
+                        System.out.println("\f");
+                        numberOfPlayers();
+                }
+ 
+ 
+        }
+ 
+        private void run() throws ClassNotFoundException, IOException
+        {
+ 
+                if (board.getRound() < 12){
+                int option = mainMenu();
+                while (option != 0)
+                {
+ 
+                        switch (option)
+                        {
+                        case 1:    addPlayer();
+                        break;
+                        case 2:  load();
+                        break;
+                        case 3:    System.out.println(board.toString());
+                        break;
+                        case 4:    
+                                if (playerNames.size() > 0){
+                                        firstMenu();
+                                }
+                                else System.out.println("Add players first");
+                        break;
+                        case 5:    System.out.println(board.rules());
+                        break;
+                       
+                        }
+                        System.out.println("\nPress any key to continue...");
+                        input.nextLine();
+                        input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+ 
+                        //clear the terminal window and display the main menu again
+                        System.out.println("\f");
+                        option = mainMenu();
+                }  
+                System.out.println("Exiting... bye");
+                System.exit(0);
+        }
+                else{
+                        int i =0;
+                        for (Player player: playerNames){
+                                playerNames.get(i).sellShareMotor(player.getMotorShares());
+                                playerNames.get(i).sellShareSteel(player.getSteelShares());
+                                playerNames.get(i).sellShareStore(player.getStoreShares());
+                                playerNames.get(i).sellShareShipping(player.getShippingShares());
+                                i++;
+                        }
+                        if (playerNames.size() > 0)
+                      {
+                                int a=0;
+                         Player richest = playerNames.get(0);
+                         for (Player player : playerNames)
+                         {
+                            if (playerNames.get(a).getPlayerBalance() > richest.getPlayerBalance() )  
+                                richest = playerNames.get(a);
+                                a++;
+                         }
+                         System.out.println("The winner is Player" + richest);
+                      }
+                }
+        }
+       
+ 
+        private void firstMenu() throws ClassNotFoundException, IOException
+        {
+                int option = mainMenuTwo();
+                while (option != 0)
+                {
+ 
+                        switch (option)
+                        {
+                        case 1:    if (endingRound == 0){
+                                           drawingCards();
+                                      }
+                                          else {
+                                                  System.out.println("Cards have already been drawn!");
+                                          }
+                        break;
+                        case 2:    saveLoad();
+                        break;
+                        case 3:    if (endingRound == 1)
+                                       { secondMenu();
+                                       }
+                              else {
+                                       System.out.println("Must draw cards first!");
+                                       }
+                        break;
+                        }
+                        System.out.println("\nPress any key to continue...");
+                        input.nextLine();
+                        input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+ 
+                        //clear the terminal window and display the main menu again
+                        System.out.println("\f");
+                        option = mainMenuTwo();
+                }  
+                System.out.println("Exiting... bye");
+                System.exit(0);
+        }
+       
+        private void secondMenu() throws ClassNotFoundException, IOException
+        {
+                int option = mainMenuThree();
+                while (option != 0)
+                {
+            while (playerNumber +1 <= playerNames.size()){
+                        switch (option)
+                        {
+                        case 1:    buyShares();
+                        break;
+                        case 2:    sellShares();
+                        break;
+                        case 3:    System.out.println(playerNames.get(playerNumber).getAllShares());
+                        break;
+                        case 4:    saveLoad();
+                        break;
+                        case 5:   System.out.println(playerNames.get(playerNumber).getPlayerBalance());
+                        break;
+                        case 6:     if (playerNumber + 1  == playerNames.size()){
+                        board.setRound();
+                        endingRound=0;
+                        playerNumber =0;
+                        run();
+                        }            
+                        else{
+                                playerNumber++;
+                        mainMenuThree();
+                        }                                      
+                        break;
+                        }
+                       
+                        }
+                        System.out.println("\nPress any key to continue...");
+                        input.nextLine();
+                        input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+ 
+                        //clear the terminal window and display the main menu again
+                        System.out.println("\f");
+                        option = mainMenuThree();
+                }  
+                System.out.println("Exiting... bye");
+                System.exit(0);
+        }
+ 
+        private int mainMenu()    
+        {
+                System.out.println("Welcome to Stocks and Shares");
+                System.out.println("---------");
+                System.out.println("Round Number:" + board.getRound());
+                System.out.println("  1) Add Player Names");    
+                System.out.println("  2) Load Game");
+                System.out.println("  3)  Get Current Stock Prices");
+                System.out.println("  4) Start Game");
+                System.out.println("  5) Rules");
+                System.out.println("  0) Quit Game");
+                int option = input.nextInt();
+                return option; 
+        }
+       
+        private int mainMenuTwo()
+        {
+                System.out.println("Stocks and Shares");
+                System.out.println("---------");    
+                System.out.println("  1) Draw Cards");
+                System.out.println("   2)  Save Game");
+                System.out.println("   3)  Start Buying/Selling Phase");
+                System.out.println("   0)  Quit Game");
+                int option = input.nextInt();
+                return option; 
+        }
+       
+        private int mainMenuThree()
+        {
+                System.out.println("Player" + (playerNumber+1) + "It's your Go");
+                System.out.println("---------");
+                System.out.println("  1) Buy Stocks");
+                System.out.println("  2) Sell Stocks");
+                System.out.println("  3) Check Current Stocks");
+                System.out.println("  4) Save Game");
+                System.out.println("  5) Check Current Balance");
+                System.out.println("  6) End Turn");
+                int option = input.nextInt();
+                return option;
+        }
+ 
+ 
+        private void addPlayer()  
+        {
+                for(int b=0; b<i; b++)
+                {
+                        System.out.println("Player Number " + (b+1) + " enter your name: ");
+                        String c = input.next();
+                        Player player = new Player(c);
+                        playerNames.add(player);
+ 
+                }
+        }
+ 
+ 
+       
+        public String drawingCards(){
+                int i=1;
+                if (playerNames.size() > 0)
+                {
+                        for (Player player: playerNames){
+                                {
+                                System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
+                                String newStatus = input.next();
+                        //      newStatus=input.nextLine(); // bug?
+                                if (newStatus.toLowerCase().equals("y"))
+                                {
+                                        System.out.println(cards.drawCard());
+                                        int index = cards.getIndex();
+                                        if (cards.currentCardType(index).equals("Store")){
+                                                if (cards.currentUpOrDown(index).equals("Up: £")){
+                                                        board.setStoreUp(cards.currentCardValue(index));
+                                                }
+                                       
+                                            else {
+                                                        board.setStoreDown(cards.currentCardValue(index));
+                                                }
+                                        }
+ 
+                                                if (cards.currentCardType(index).equals("Steel")){
+                                                        if (cards.currentUpOrDown(index).equals("Up: £")){
+                                                                board.setSteelUp(cards.currentCardValue(index));
+                                                        }
+                                                        else {
+                                                                board.setSteelDown(cards.currentCardValue(index));
+                                                        }
+                                                }
+ 
+                                                        if (cards.currentCardType(index).equals("Shipping")){
+                                                                if (cards.currentUpOrDown(index).equals("Up: £")){
+                                                                        board.setShippingUp(cards.currentCardValue(index));
+                                                                }
+                                                                else {
+                                                                        board.setShippingDown(cards.currentCardValue(index));
+                                                                }
+                                                        }
+                                                       
+                                                                if (cards.currentCardType(index).equals("Motor")){
+                                                                        if (cards.currentUpOrDown(index).equals("Up: £")){
+                                                                                board.setMotorUp(cards.currentCardValue(index));
+                                                                        }
+                                                                        else {
+                                                                                board.setMotorDown(cards.currentCardValue(index));
+                                                                        }      
+                                                                       
+                                                                }
+                                                                if (cards.currentCardType(index).equals("Bear")){
+                                                                        board.setMotorDown(cards.currentCardValue(index));
+                                                                        board.setShippingDown(cards.currentCardValue(index));
+                                                                        board.setStoreDown(cards.currentCardValue(index));
+                                                                        board.setSteelDown(cards.currentCardValue(index));
+                                                                }
+                                                               
+                                                                if (cards.currentCardType(index).equals("Bull")){
+                                                                        board.setMotorUp(cards.currentCardValue(index));
+                                                                        board.setShippingUp(cards.currentCardValue(index));
+                                                                        board.setStoreUp(cards.currentCardValue(index));
+                                                                        board.setSteelUp(cards.currentCardValue(index));
+                                                                }
+                                                                   cards.removeArray(cards.getIndex());
+                                                                        i++;   
+                                                       
+                                }
+                                }
+                                cards.makeCards();
+                                endingRound = 1;
+                        }
+                }
+ 
+                return "Need more players";
+        }
+       
+        public void buyShares(){
+                index=0;
+                System.out.println("Which type of share would you like to buy?:  ");
+                System.out.println("   1)  Motor");
+                System.out.println("   2)  Shipping");
+                System.out.println("   3)  Store");
+                System.out.println("   4)  Steel");
+                System.out.println("   0)  Exit");
+                int i = input.nextInt();
+                switch (i){
+                case 1:      System.out.println("how many motor shares would you like to buy?");
+                                         int a  = input.nextInt();
+                                         playerNames.get(index).buyShareMotor(a);
+                break;
+                case 2:      System.out.println("how many shipping shares would you like to buy?");
+                                         int b  = input.nextInt();
+                                         playerNames.get(index).buyShareShipping(b);
+                break;
+                case 3:     System.out.println("how many store shares would you like to buy?");
+                                        int c  = input.nextInt();
+                                        playerNames.get(index).buyShareStore(c);
+                break;
+                case 4:       System.out.println("how many steel shares would you like to buy?");
+                                          int d  = input.nextInt();
+                                          playerNames.get(index).buySteelShares(d);
+                break;
+                case 0:    mainMenuThree();
+                break;
+ 
+                }
+        }
+       
+        public void sellShares(){
+                int index =0;
+                System.out.println("Which type of share would you like to sell?:  ");
+                int i = input.nextInt();
+                System.out.println("   1)  Motor");
+                System.out.println("   2)  Shipping");
+                System.out.println("   3)  Store");
+                System.out.println("   4)  Steel");
+                System.out.println("   0)  Exit");
+                switch (i){
+                case 1:      System.out.println("how many motor shares would you like to sell?");
+                                         int a  = input.nextInt();
+                                         playerNames.get(index).sellShareMotor(a);
+                break;
+                case 2:      System.out.println("how many shipping shares would you like to sell?");
+                                         int b  = input.nextInt();
+                                         playerNames.get(index).sellShareMotor(b);
+                break;
+                case 3:     System.out.println("how many store shares would you like to sell?");
+                                        int c  = input.nextInt();
+                                        playerNames.get(index).sellShareStore(c);
+                break;
+                case 4:       System.out.println("how many steel shares would you like to sell?");
+                                          int d  = input.nextInt();
+                                          playerNames.get(index).sellShareSteel(d);
+                break;
+ 
+                }
+ 
+        }
+        public void saveLoad() throws IOException, ClassNotFoundException
+        {
+                //Create new board for testing
         System.out.println("Creating board:");
         board = new Board(board.getMotor(), board.getStore(), board.getShipping(), board.getSteel(), board.getRound());
         //Print out board object
         System.out.println(board.toString());
-
+ 
         System.out.println("Saving board and players");
         //FileOutputStream will save to board.dat (Note the file extension can be anything you want!)
         FileOutputStream fos = new FileOutputStream("board.dat");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-
+ 
         //Serialize the object and write to file.
         oos.writeObject(board);
         oos.writeObject(playerNames);
         System.out.println("Saved");
-
+ 
         //Don't forget to close the streams (Avoids memory leaks)
         oos.close();
         fos.close();
-	}
-	
-	public void load() throws IOException, ClassNotFoundException{
-	//Load saved board.
+        }
+       
+        public void load() throws IOException, ClassNotFoundException{
+        //Load saved board.
     System.out.println("Create new board from saved board:");
     FileInputStream fis = new FileInputStream("board.dat");
     ObjectInputStream ois = new ObjectInputStream(fis);
-
+ 
     //Load the old board state into the newly created Board object
     board = (Board) ois.readObject();
     playerNames = (ArrayList<Player>) ois.readObject();
     System.out.println(board.toString());
-
+ 
     //Again, don't forget to close the streams
     fis.close();
     ois.close();
 }
 }
-
-

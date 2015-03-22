@@ -1,3 +1,7 @@
+/**
+ * Cards holds all the types of cards
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,7 +21,7 @@ public class Cards {
 		randomGenerator = new Random();
 	}
 
-
+    //Makes the cards
 	public void makeCards(){
 		idk = new CardSetup("Bull", "Up: £", 4);
 		cards.add(idk);
@@ -35,6 +39,7 @@ public class Cards {
 		}
 	}
 
+//Allows players to checkwhatcar they drew
 public String checkCards(){
 	String str="";
 	for (int i=0; i<=25; i++){
@@ -43,31 +48,37 @@ public String checkCards(){
 	return str;
 }
 
+//Gets index of card
 public int getIndex(){
 	return index;
 }
 
+//Removes index 
 public void removeArray(int index){
 	cards.remove(index);
 }
 
+//Gets index from current card
 public CardSetup currentCard(){
 	return cards.get(index);
 }
 
+//Shows the current card type pulled
 public String currentCardType(int index2){
 	return cards.get(index).getCardType();
 }
 
+//Gets current card value
 public int currentCardValue(int index){
 	return cards.get(index).getCardNumber();
 }
 
+//Determines whether the value increase or decreases shares
 public String currentUpOrDown(int index){
 	return cards.get(index).getUpOrDown();
 }
 
-	
+//Allows player to draw a card randomly
 public String drawCard(){
 	this.index = randomGenerator.nextInt(cards.size());
 	String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 

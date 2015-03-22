@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable {
 	private String playerName; 
 	private int playerBalance = 80;
 	private int numberOfSteelShares=0;
@@ -30,14 +31,23 @@ public class Player {
 		}
 
 		
-		board = new Board();
+		board = new Board(1,1,1,1,1);
 	}
 	
 	public Player(){
-		board = new Board();
+		board = new Board(1,1,1,1,1);
+	}
+	
+	public void setPlayerBalanceUp(int i){
+		this.playerBalance += i;
 	}
 
+	public void setPlayerBalanceDown(int i){
+		this.playerBalance -= i;
+	}
+	
 	public void buyShareMotor(int a){
+		int index;
 			if (a<motorShares){
 			if (a>0 && a<6){
 				if(board.getMotor() > 0){
@@ -46,6 +56,7 @@ public class Player {
 						numberOfMotorShares += a;
 						motorShares = motorShares - a;
 						System.out.println("You have bought" + a + " motor shares");
+						System.out.println("Your new balance is " + playerBalance);
 					}
 					else{
 						System.out.println("Not Enough Money");

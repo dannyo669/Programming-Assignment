@@ -1,3 +1,6 @@
+/**
+ * Set up all the different outcomes of the cards
+ */
 
 public class CardSetup {
 
@@ -12,27 +15,32 @@ public class CardSetup {
 		this.cardNumber=cardNumber;
 	}
 	
-
+    //Gets the cardtype
 	public String getCardType(){
 		return cardType;
 	}
 	
+	//Sets the card type
 	public void setCardType(String cardType){
 		this.cardType=cardType;
 	}
 	
+	//Gets the card number
 	public int getCardNumber(){
 		return cardNumber;
 	}
 	
+	//Sets the card number
 	public void setCardNumber(int cardNumber){
 		this.cardNumber=cardNumber;
 	}
 	
+	//Gets the card up or down
 	public String getUpOrDown(){
 		return upOrDown;
 	}
 	
+	//Sets the card up or down
 	public void setUpOrDown(String upOrDown){
 		this.upOrDown=upOrDown;
 	}

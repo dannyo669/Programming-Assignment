@@ -1,3 +1,7 @@
+/**
+ * Holds information for the player such as name, balance and shares
+ */
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
@@ -18,7 +22,7 @@ public class Player implements Serializable {
 	private Scanner input;
 	private Board board;
 
-
+    //Constructs players name
 	public Player(String playerName)
 	{
 		if (playerName.length() < 11)
@@ -38,14 +42,17 @@ public class Player implements Serializable {
 		board = new Board(1,1,1,1,1);
 	}
 	
+	//Sets the player balance to increase
 	public void setPlayerBalanceUp(int i){
 		this.playerBalance += i;
 	}
-
+    
+	//Sets the player balance to decrease
 	public void setPlayerBalanceDown(int i){
 		this.playerBalance -= i;
 	}
 	
+	//Allows players to buy Motor shares
 	public void buyShareMotor(int a){
 		int index;
 			if (a<motorShares){
@@ -72,7 +79,7 @@ public class Player implements Serializable {
 		}
 	}
 	
-	
+  //Allows player to buy Shipping sjares 
   public void buyShareShipping(int b){
 		if (b<shippingShares){
 			if (b>0 && b<6){
@@ -106,7 +113,7 @@ public class Player implements Serializable {
 		
 	
 	
-
+  //Allows player to buy Store shares
   public void buyShareStore(int c){
 		if (c<storeShares){
 			if (c>0 && c<6){
@@ -131,7 +138,7 @@ public class Player implements Serializable {
 		}
   }
 
-
+    //Allows player to buy steel shares
     public void buySteelShares(int d){
 		if (d<steelShares){
 			if (d>0 && d<6){
@@ -157,7 +164,7 @@ public class Player implements Serializable {
     }
 		
 	
-
+    //Allows player to sell Motor shares
 	public void sellShareMotor(int a){
 		if (numberOfMotorShares > a){
 			if (a>0 && a<6){
@@ -187,6 +194,7 @@ public class Player implements Serializable {
 			}
 	}
 		
+	//Allows player to sell Shipping shares
 	public void sellShareShipping(int b){
 		if (numberOfShippingShares > b){
 			if (b>0 && b<6){
@@ -215,7 +223,7 @@ public class Player implements Serializable {
 			System.out.println("Max number of shares per turn is 5");
 		}}
 	
-		
+	    //Allows player to sell Store shares
 		public void sellShareStore(int c){
 		if (numberOfStoreShares > c){
 			if (c>0 && c<6){
@@ -245,7 +253,7 @@ public class Player implements Serializable {
 		}
 		}
 		
-		
+		 //Allows player to sell Steel shares
 		public void sellShareSteel(int d){
 		if (numberOfSteelShares > d){
 			if (d>0 && d<6){
@@ -275,7 +283,7 @@ public class Player implements Serializable {
 		}
 		}
 
-
+        //Sets player name
 		public  void  setPlayerName (String playerName)
 		{
 			if (playerName.length() < 10)
@@ -287,37 +295,44 @@ public class Player implements Serializable {
 			}
 		}
 
+		//Gets player name
 		public String getPlayerName() {
 			return playerName;
 		}
-
+ 
+		//Gets player balance
 		public int getPlayerBalance(){
 			return playerBalance;
 
 		}
 
+		//Gets Steel shares
 		public int getSteelShares(){
 			return numberOfSteelShares;
 		}
-
+		
+        //Gets Store shares
 		public int getStoreShares(){
 			return numberOfStoreShares;
 		}
 
+		//Gets Shipping shares
 		public int getShippingShares(){
 			return numberOfShippingShares;
 		}
 
+		//Gets Motor share
 		public int getMotorShares(){
 			return numberOfMotorShares;
 		}
 
+		//Gets  all shares
 		public String getAllShares(){
 			return ("Motor: " + numberOfMotorShares + "\n" + "Shipping: " + numberOfShippingShares + "\n" + "Store: " + 
 		            numberOfStoreShares + "\n" + "Steel: " + numberOfSteelShares + "\n");
 		}
 		
-
+        //Sets index
         public void setIndex(){
         	this.index++;
         }

@@ -1,3 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -6,35 +12,30 @@ public class Driver {
 	private Scanner input;
 	private Board board;
 	private Cards cards;
-	private CardSetup cardSetup;
 	int i;
 	private int index;
-	private String str="";
 	private int playerNumber;
 	ArrayList<Player> playerNames = new ArrayList<Player>();
 	private int endingRound = 0;
-	private Player player;
 
-	public Driver()
+	public Driver() throws ClassNotFoundException, IOException
 	{
 		input = new Scanner(System.in);
-		board = new Board();
+		board = new Board(10,10,10,10,1);
 		cards = new Cards();
-		player = new Player();
-		cardSetup = new CardSetup(null, null, 0);
 		i=0;
 		playerNumber = 0;
 		numberOfPlayers();
 	}
 
-	public static void main(String[] argvs){
+	public static void main(String[] argvs) throws ClassNotFoundException, IOException{
 		Driver driver = new Driver();
 	}
 
 
 
 
-	private void numberOfPlayers()
+	private void numberOfPlayers() throws ClassNotFoundException, IOException
 	{
 		System.out.println("Enter the number of players: ");
 		int i = input.nextInt();
@@ -57,7 +58,7 @@ public class Driver {
 
 	}
 
-	private void run()
+	private void run() throws ClassNotFoundException, IOException
 	{
 
 		if (board.getRound() < 12){
@@ -69,7 +70,8 @@ public class Driver {
 			{
 			case 1:    addPlayer();
 			break; 
-			// case 2 is load game feature, add later?
+			case 2:  load();
+			break;
 			case 3:    System.out.println(board.toString());
 			break;
 			case 4:    
@@ -78,33 +80,9 @@ public class Driver {
 				}
 				else System.out.println("Add players first");
 			break;
-			case 5: 	System.out.println("Rules of Stocks and Shares" + "\n" +"\n"
-					+ "Four Types of Stock Commodity."+ "\n" + "There are 28 shares for each Commodity." + "\n" + "Each commodity can go up and down on the stock market." + "\n" 
-					+  "\n" +"26 Cards" + "\n" + "1 Bear Card (all four commodities down £4)" + "\n" + "1 Bull Card (all four commodities up £4)" + "\n" + "Each commodity has six cards." + "\n" + "Down £4, Down £3, Down £2, Up £2, Up £3 and Up £4." +"\n" + "The “Share Price Indicator” on Board (max price is £20 and min price is £0)" +"\n" +"\n" 
-					+ "How to play" +"\n" +"\n" + "There must be at least 3 players and no more than 6" + "\n" + "The object is, by buying or selling shares, to be the player with the most money at the end of the game" + "\n" 
-					+ "There are four kinds of shares.  During the game the values of the shares rise and fall according to the cards which affect them." + "\n"
-					+ "One card is dealt randomly to each player.  Players in turn decide whether to buy or sell shares by looking at their card and by drawing deductions from what other players’ have done." + "\n" + "\n"
-                    + "After the buying and selling is finished, the players expose their cards" +"\n" + "and the value of the shares are moved up or down on the “Share Price Indicator” board in accordance with the instructions on the exposed cards." +"\n"
-					+ "A single card each is again dealt and buying and selling of shares is done at the new values on the board.  There are 12 rounds of buying and selling in the game." + "\n"
-					+ "Players consequently make profits and losses throughout the game, depending on their skill in selling shares at a higher price than they paid for them." + "\n"
-					+ "The winner is the player who ends the game with the most money." +"\n" +"\n"
-					+ "At the start of the game" +"\n"
-					+ "Each player gets £80 of currency" +"\n"
-					+ "The share price for each commodity is set to £10 on the “Share Price Indicator” board." +"\n" +"\n" 
-					+ "Round 1" +"\n"
-					+ "Each player is dealt a card randomly (in each round only one card can appear once). This card is kept secret from other players." + "\n"
-					+ "Each player takes their turn deciding whether to buy shares or pass." +"\n" + "A player can buy up to or including 5 of any kind of commodity.  If they want more than 5, of a kind, s/he must by multiples of 5 e.g. 10, 15, 20, etc.  The player must have enough money to buy the shares and there must be enough shares left to buy." +"\n" 	
-					+ "If a player decides to buy shares, they are £10 each in the first round.  The number of shares for each commodity they buy are deducted from the total of available shares for that commodity." + "\n" + "\n"
-					+ "Scoring at the end of Round 1" +"\n"
-					+ "When each player has taken their turn, each player’s card is displayed and the values of the shares increase or decrease based on the values of the cards. Note: A bear card, all down £4.  A bull card, all up £4." + "\n" + "\n" 
-					+ "Subsequent Rounds" +"\n" 
-					+ "The play and scoring for all subsequent rounds are exactly the same as for the first round, except that, in addition to buying, a player who holds shares can sell them as the price shown on the “Share Price Indicator” board." + "\n" 
-					+ "Shares cannot go higher than £20 or drop below £0.  Shares cannot be bought or sold at £0." +"\n" +"\n" 
-					+ "End of Game" +"\n"
-					+ "The game ends when 12 rounds have been played." +"\n" 
-					+ "All players now sell their shares according to the values on the “Share Price Indicator” board.  This amount is added to their existing cash."  +"\n"
-					+ "The winner is determined as the player with the most money!");
-
+			case 5:    System.out.println(board.rules());
+			break;
+			
 			}
 			System.out.println("\nPress any key to continue...");
 			input.nextLine();
@@ -142,7 +120,7 @@ public class Driver {
 	}
 	
 
-	private void firstMenu()
+	private void firstMenu() throws ClassNotFoundException, IOException
 	{
 		int option = mainMenuTwo();
 		while (option != 0)
@@ -157,10 +135,9 @@ public class Driver {
 						  System.out.println("Cards have already been drawn!");
 					  }
 			break;
-		//	case 2:    load
-			case 3:    System.out.println(board.toString());
+			case 2:    saveLoad();
 			break;
-			case 4:    if (endingRound == 1)
+			case 3:    if (endingRound == 1)
 				       { secondMenu();
 				       }
 			      else {
@@ -180,7 +157,7 @@ public class Driver {
 		System.exit(0);
 	}
 	
-	private void secondMenu()
+	private void secondMenu() throws ClassNotFoundException, IOException
 	{
 		int option = mainMenuThree();
 		while (option != 0)
@@ -194,7 +171,7 @@ public class Driver {
 			break;
 			case 3:    System.out.println(playerNames.get(index).getAllShares());
 			break;
-			case 4:    //Save Game
+			case 4:    saveLoad();
 			break;
 			case 5:   System.out.println(playerNames.get(playerNumber).getPlayerBalance());
 			break;
@@ -206,6 +183,7 @@ public class Driver {
 			   	       if (apple.toLowerCase().equals("y"))
 			   	    		   {
 			           board.setRound();
+			           endingRound=0;
 			   	       }
 			   	       else{
 			   	    	   mainMenuThree();
@@ -244,10 +222,9 @@ public class Driver {
 		System.out.println("Stocks and Shares");
 		System.out.println("---------");     
 		System.out.println("  1) Draw Cards");
-		System.out.println("   3)  Save Game");
-		System.out.println("   4)  Start Buying/Selling Phase");
-		
-		
+		System.out.println("   2)  Save Game");
+		System.out.println("   3)  Start Buying/Selling Phase");
+		System.out.println("   0)  Quit Game");
 		int option = input.nextInt();
 		return option;	
 	}
@@ -262,7 +239,6 @@ public class Driver {
 		System.out.println("  4) Save Game");
 		System.out.println("  5) Check Current Balance");
 		System.out.println("  6) End Turn");
-		
 		int option = input.nextInt();
 		return option;
 	}
@@ -273,8 +249,7 @@ public class Driver {
 		for(int b=0; b<i; b++)
 		{
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
-			String c = input.nextLine();
-			c = input.nextLine();
+			String c = input.next();
 			Player player = new Player(c);
 			playerNames.add(player);
 
@@ -290,8 +265,8 @@ public class Driver {
 			for (Player player: playerNames){
 				{
 				System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
-				String newStatus = input.nextLine();
-				newStatus=input.nextLine(); // bug?
+				String newStatus = input.next();
+			//	newStatus=input.nextLine(); // bug?
 				if (newStatus.toLowerCase().equals("y"))
 				{
 					System.out.println(cards.drawCard());
@@ -417,4 +392,44 @@ public class Driver {
 		}
 
 	}
+	public void saveLoad() throws IOException, ClassNotFoundException
+	{
+		//Create new board for testing
+        System.out.println("Creating board:");
+        board = new Board(board.getMotor(), board.getStore(), board.getShipping(), board.getSteel(), board.getRound());
+        //Print out board object
+        System.out.println(board.toString());
+
+        System.out.println("Saving board and players");
+        //FileOutputStream will save to board.dat (Note the file extension can be anything you want!)
+        FileOutputStream fos = new FileOutputStream("board.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        //Serialize the object and write to file.
+        oos.writeObject(board);
+        oos.writeObject(playerNames);
+        System.out.println("Saved");
+
+        //Don't forget to close the streams (Avoids memory leaks)
+        oos.close();
+        fos.close();
+	}
+	
+	public void load() throws IOException, ClassNotFoundException{
+	//Load saved board.
+    System.out.println("Create new board from saved board:");
+    FileInputStream fis = new FileInputStream("board.dat");
+    ObjectInputStream ois = new ObjectInputStream(fis);
+
+    //Load the old board state into the newly created Board object
+    board = (Board) ois.readObject();
+    playerNames = (ArrayList<Player>) ois.readObject();
+    System.out.println(board.toString());
+
+    //Again, don't forget to close the streams
+    fis.close();
+    ois.close();
 }
+}
+
+

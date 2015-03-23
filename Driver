@@ -53,6 +53,7 @@ public class Driver {
 	private void numberOfPlayers() throws ClassNotFoundException, IOException
 	{
 		System.out.println("Enter the number of players: ");
+		try{
 		int i = input.nextInt();
 		if (i>=3 && i < 7)
 		{
@@ -68,7 +69,14 @@ public class Driver {
 			//clear the terminal window and display the main menu again
 			System.out.println("\f");
 			numberOfPlayers();
-		}
+		}}
+		catch (Exception e)
+          { 
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Num expected - you entered  text");
+	    	numberOfPlayers();
+          }
+
 
 
 	}
@@ -88,7 +96,15 @@ public class Driver {
 
 				switch (option)
 				{
-				case 1:    addPlayer();
+				case 1:  try{
+					addPlayer();
+				}
+				catch (Exception e){
+					 
+					String throwOut = input.nextLine();  //swallows
+			    	System.out.println("Invalid data");
+			    	run();
+				}
 				break;
 				case 2:  load();
 				break;
@@ -154,7 +170,7 @@ public class Driver {
 			switch (option)
 			{
 			case 1:    if (endingRound == 0){
-				drawingCards();
+				       drawingCards();
 			}
 			else {
 				System.out.println("Cards have already been drawn!");
@@ -193,7 +209,7 @@ public class Driver {
 		int option = mainMenuThree();
 		while (option != 0)
 		{
-			while (playerNumber +1 <= playerNames.size()){
+			if (playerNumber +1 <= playerNames.size()){
 				switch (option)
 				{
 				case 1:    buyShares();
@@ -214,7 +230,8 @@ public class Driver {
 				}            
 				else{
 					playerNumber++;
-					mainMenuThree();
+					secondMenu();
+					
 				}                                      
 				break;
 				}
@@ -299,9 +316,16 @@ public class Driver {
 		for(int b=0; b<i; b++)
 		{
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
+			try {
 			String c = input.next();
 			Player player = new Player(c);
 			playerNames.add(player);
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+		    	System.out.println("Error invalid data");
+		    	addPlayer();
+			}
 		}
 	}
 
@@ -317,8 +341,8 @@ public class Driver {
 			for (Player player: playerNames){
 				{
 					System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
+					try{
 					String newStatus = input.next();
-					//      newStatus=input.nextLine(); // bug?
 					if (newStatus.toLowerCase().equals("y"))
 					{
 						System.out.println(cards.drawCard());
@@ -375,12 +399,23 @@ public class Driver {
 						}
 						cards.removeArray(cards.getIndex());
 						i++;   
-
+					
+						}
 					}
+
+					catch (Exception e){
+						String throwOut = input.nextLine();  //swallows
+				    	System.out.println("Error Invalid Data");
+				    	drawingCards();
+					
+					
+					
 				}
 				cards.makeCards();
 				endingRound = 1;
 			}
+			}
+			
 		}
 
 		return "Need more players";
@@ -397,27 +432,62 @@ public class Driver {
 		System.out.println("   3)  Store");
 		System.out.println("   4)  Steel");
 		System.out.println("   0)  Exit");
+		try{
 		int i = input.nextInt();
 		switch (i){
 		case 1:      System.out.println("how many motor shares would you like to buy?");
+		try{
 		int a  = input.nextInt();
 		playerNames.get(index).buyShareMotor(a);
+		}
+		catch (Exception e){
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Error Invalid Data");
+	    	buyShares();
+		}
 		break;
 		case 2:      System.out.println("how many shipping shares would you like to buy?");
+		try{
 		int b  = input.nextInt();
 		playerNames.get(index).buyShareShipping(b);
+		}
+		catch (Exception e){
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Error Invalid Data");
+	    	buyShares();
+		}
 		break;
 		case 3:     System.out.println("how many store shares would you like to buy?");
+		try{
 		int c  = input.nextInt();
 		playerNames.get(index).buyShareStore(c);
+		}
+		catch (Exception e){
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Error Invalid Data");
+	    	buyShares();
+		}
 		break;
 		case 4:       System.out.println("how many steel shares would you like to buy?");
+		try{
 		int d  = input.nextInt();
 		playerNames.get(index).buySteelShares(d);
+		}
+		catch (Exception e){
+		String throwOut = input.nextLine();  //swallows
+    	System.out.println("Error Invalid Data");
+    	buyShares();
+		}
 		break;
 		case 0:    mainMenuThree();
 		break;
 
+		}
+		}
+		catch (Exception e){
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Error Invalid Data");
+	    	buyShares();
 		}
 	}
 
@@ -427,6 +497,7 @@ public class Driver {
 	public void sellShares(){
 		int index =0;
 		System.out.println("Which type of share would you like to sell?:  ");
+		try{
 		int i = input.nextInt();
 		System.out.println("   1)  Motor");
 		System.out.println("   2)  Shipping");
@@ -452,6 +523,13 @@ public class Driver {
 		break;
 
 		}
+		}
+		catch (Exception e){
+			String throwOut = input.nextLine();  //swallows
+	    	System.out.println("Error Invalid Data");
+	    	sellShares();
+		}
+		
 
 	}
 

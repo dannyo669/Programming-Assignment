@@ -57,7 +57,7 @@ public class Driver {
 		System.out.println("Enter the number of players: ");
 		try{
 			int i = input.nextInt();
-			if (i>=3 && i < 7)
+			if (i>=3 && i < 14)
 			{
 				this.i=i;
 				run();
@@ -459,6 +459,7 @@ public class Driver {
 
 				}
 			}
+			cards.clearCards();
 			cards.makeCards();
 			endingRound = 1;
 		}
@@ -483,7 +484,8 @@ public class Driver {
 			case 1:      System.out.println("how many motor shares would you like to buy?");
 			try{
 				int a  = input.nextInt();
-				if (a < 6 && a > 0 && board.getMotor() != 0 && board.getMotorShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				if (a < 6 && a > 0  || a % 5 == 0)
+				if (board.getMotor() != 0 && board.getMotorShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getMotor() * a){
 					playerNames.get(playerNumber).setMotorShares(a);
 					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getMotor() * a);
@@ -506,7 +508,8 @@ public class Driver {
 			case 2:      System.out.println("how many shipping shares would you like to buy?");
 			try{
 				int b  = input.nextInt();
-				if (b > 0 && b < 6 && board.getShipping() != 0 && board.getShippingShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				if (b > 0 && b < 6 || b % 5 == 0)
+					if(board.getShipping() != 0 && board.getShippingShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getShipping() * b){
 					playerNames.get(playerNumber).setShippingShares(b);
 					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getShipping() * b);
@@ -528,7 +531,8 @@ public class Driver {
 			break;
 			case 3:     try{System.out.println("how many store shares would you like to buy?");
 			int c  = input.nextInt();
-			if (c > 0 && c < 6 && board.getStore() != 0 && board.getStoreShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+			if (c > 0 && c < 6 || c % 5 == 0)
+				if (board.getStore() != 0 && board.getStoreShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 			board.getStore() * c){
 				playerNames.get(playerNumber).setStoreShares(c);
 				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getStore() * c);
@@ -551,7 +555,8 @@ public class Driver {
 			case 4:       System.out.println("how many steel shares would you like to buy?");
 			try{
 				int d  = input.nextInt();
-				if (d > 0 && d < 6 && board.getSteel() !=0 && board.getSteelShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				if (d > 0 && d < 6 || d % 5 == 0)
+						if (board.getSteel() !=0 && board.getSteelShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getSteel() * d){
 					playerNames.get(playerNumber).setSteelShares(d);
 					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getSteel() * d);
@@ -600,7 +605,6 @@ public class Driver {
 			case 1:      System.out.println("how many motor shares would you like to sell?");
 			try {
 				int a  = input.nextInt();
-				if (a > 0 && a < 6 || a % 5 == 0)
 					if(board.getMotor() != 0 && playerNames.get(playerNumber).getMotorShares() >= a){
 						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getMotorShares()-a);
 						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getMotor() * a);
@@ -626,7 +630,6 @@ public class Driver {
 			case 2:      System.out.println("how many shipping shares would you like to sell?");
 			try {
 				int b  = input.nextInt();
-				if (b > 0 && b < 6 || b % 5 == 0 )
 					if (board.getShipping() != 0 && playerNames.get(playerNumber).getShippingShares() >= b){
 						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getShippingShares()-b);
 						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getShipping() * b);
@@ -650,7 +653,6 @@ public class Driver {
 			case 3:     System.out.println("how many store shares would you like to sell?");
 			try {
 				int c  = input.nextInt();
-				if (c > 0 && c < 6 || c % 5 == 0)
 					if (board.getStore() != 0 && playerNames.get(playerNumber).getStoreShares() >= c){
 						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getStoreShares()-c);
 						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getStore() * c);
@@ -674,7 +676,6 @@ public class Driver {
 			case 4:       System.out.println("how many steel shares would you like to sell?");
 			try {
 				int d  = input.nextInt();
-				if (d > 0 && d < 6 || d % 5 == 0)
 					if(board.getSteel() != 0 && playerNames.get(playerNumber).getSteelShares() >= d){
 						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getSteelShares()-d);
 						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getSteel() * d);

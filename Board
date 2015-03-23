@@ -17,6 +17,10 @@ public class Board implements Serializable {
 	private int motor;
 	private int shipping;
 	private int round;
+	private int steelShares = 28;
+	private int storeShares = 28;
+	private int motorShares = 28;
+	private int shippingShares = 28;
 
 
 	/**
@@ -73,6 +77,79 @@ public class Board implements Serializable {
 
 		this.round=round;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * returns the number of steel shares
+	 */
+	public int getSteelShares(){
+		return steelShares;
+	}
+	
+	/**
+	 * 
+	 * @param steelShares
+	 * sets the number of steel shares
+	 */
+	public void setSteelShares(int steelShares){
+		this.steelShares=steelShares;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * returns the number of store shares
+	 */
+	public int getStoreShares(){
+		return storeShares;
+	}
+	
+	/**
+	 * 
+	 * @param storeShares
+	 * sets the number of steel shares
+	 */
+	public void setStoreShares(int storeShares){
+		this.storeShares=storeShares;
+	}
+	
+	/**
+	 * 
+	 * @param shippingShares
+	 * sets the number of steel shares
+	 */
+	public void setShippingShares(int shippingShares){
+		this.shippingShares=shippingShares;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * returns the number of store shares
+	 */
+	public int getMotorShares(){
+		return motorShares;
+	}
+	
+	/**
+	 * 
+	 * @param motorShares
+	 * sets the number of steel shares
+	 */
+	public void setMotorShares(int motorShares){
+		this.motorShares=motorShares;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * returns the number of store shares
+	 */
+	public int getShippingShares(){
+		return shippingShares;
+	}
+
 
 	/**
 	 * 
@@ -141,10 +218,8 @@ public class Board implements Serializable {
 	 */
 	public void setStoreUp(int store){
 		this.store += store;
-		if(this.store > 20){
-			this.store=20;
 		}
-	}
+
 
 	/**
 	 * 
@@ -185,9 +260,6 @@ public class Board implements Serializable {
 	 */
 	public void setMotorUp(int motor){
 		this.motor += motor;
-		if(this.steel > 20){
-			this.steel=20;
-		}
 	}
 
 	/**

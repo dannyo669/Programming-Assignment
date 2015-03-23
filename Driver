@@ -496,14 +496,14 @@ public class Driver {
 	 */
 	public void sellShares(){
 		int index =0;
-		System.out.println("Which type of share would you like to sell?:  ");
 		try{
-		int i = input.nextInt();
+		System.out.println("Which type of share would you like to sell?:  ");	
 		System.out.println("   1)  Motor");
 		System.out.println("   2)  Shipping");
 		System.out.println("   3)  Store");
 		System.out.println("   4)  Steel");
 		System.out.println("   0)  Exit");
+		int i = input.nextInt();
 		switch (i){
 		case 1:      System.out.println("how many motor shares would you like to sell?");
 		int a  = input.nextInt();

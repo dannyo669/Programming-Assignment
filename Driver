@@ -21,6 +21,7 @@ public class Driver {
 	private int playerNumber;
 	ArrayList<Player> playerNames = new ArrayList<Player>();
 	private int endingRound = 0;
+	private boolean playersAdded = false;
 
 	/**
 	 * 
@@ -90,7 +91,7 @@ public class Driver {
 	private void run() throws ClassNotFoundException, IOException
 	{
 
-		if (board.getRound() < 12){
+		if (board.getRound() < 4){
 			int option = mainMenu();
 			while (option != 0)
 			{
@@ -98,7 +99,12 @@ public class Driver {
 				switch (option)
 				{
 				case 1:  try{
-					addPlayer();
+					if (playersAdded == false){
+						addPlayer();
+					}
+					else {
+						System.out.println("Players have already been added");
+					}
 				}
 				catch (Exception e){
 
@@ -148,16 +154,39 @@ public class Driver {
 			if (playerNames.size() > 0)
 			{
 				int a=0;
+				int b=0;
+				int c= 0;
+				int d =0;
 				Player richest = playerNames.get(0);
 				for (Player player : playerNames)
 				{
-					if (playerNames.get(a).getPlayerBalance() > richest.getPlayerBalance() )  
+
+					if (playerNames.get(a).getPlayerBalance() > richest.getPlayerBalance())  {
 						richest = playerNames.get(a);
-					a++;
+					}
+
 				}
-				System.out.println("The winner is Player" + richest);
-			}
-		}
+
+				for (Player player : playerNames){
+
+					if (playerNames.get(b).getPlayerBalance() == richest.getPlayerBalance()){
+						c++;
+					}
+					b++;
+				}
+				if (c > 0){
+					System.out.println("Ther has been a draw" + "\n");
+					for (Player player: playerNames){
+						System.out.println(playerNames.get(d).getPlayerName() + "Finished with " + playerNames.get(d).getPlayerBalance());
+						d++;
+					}
+				}
+				else{
+					System.out.println("The winner is " + richest.getPlayerName());
+				}
+
+
+			}}
 	}
 
 	/**
@@ -301,7 +330,7 @@ public class Driver {
 	 */
 	private int mainMenuThree()
 	{
-		System.out.println("Player" + (playerNumber+1) + "It's your Go");
+		System.out.println(playerNames.get(playerNumber).getPlayerName() + " It's your Go");
 		System.out.println("---------");
 		System.out.println("  1) Buy Stocks");
 		System.out.println("  2) Sell Stocks");
@@ -331,6 +360,7 @@ public class Driver {
 				System.out.println("Error invalid data");
 				addPlayer();
 			}
+			playersAdded = true;
 		}
 	}
 
@@ -340,12 +370,12 @@ public class Driver {
 	 * @return need more players if it isn't valid
 	 */
 	public String drawingCards(){
-		int i=1;
+		int i=0;
 		if (playerNames.size() > 0)
 		{
 			for (Player player: playerNames){
 				{
-					System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
+					System.out.println(playerNames.get(i).getPlayerName() + " are you ready to draw your card? press Y when ready");
 					try{
 						String newStatus = input.next();
 						if (newStatus.toLowerCase().equals("y"))
@@ -355,37 +385,45 @@ public class Driver {
 							if (cards.currentCardType(index).equals("Store")){
 								if (cards.currentUpOrDown(index).equals("Up: £")){
 									board.setStoreUp(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 
 								else {
 									board.setStoreDown(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 							}
 
 							if (cards.currentCardType(index).equals("Steel")){
 								if (cards.currentUpOrDown(index).equals("Up: £")){
 									board.setSteelUp(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 								else {
 									board.setSteelDown(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 							}
 
 							if (cards.currentCardType(index).equals("Shipping")){
 								if (cards.currentUpOrDown(index).equals("Up: £")){
 									board.setShippingUp(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 								else {
 									board.setShippingDown(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 							}
 
 							if (cards.currentCardType(index).equals("Motor")){
 								if (cards.currentUpOrDown(index).equals("Up: £")){
 									board.setMotorUp(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}
 								else {
 									board.setMotorDown(cards.currentCardValue(index));
+									cards.removeArray(cards.getIndex());
 								}      
 
 							}
@@ -394,6 +432,7 @@ public class Driver {
 								board.setShippingDown(cards.currentCardValue(index));
 								board.setStoreDown(cards.currentCardValue(index));
 								board.setSteelDown(cards.currentCardValue(index));
+								cards.removeArray(cards.getIndex());
 							}
 
 							if (cards.currentCardType(index).equals("Bull")){
@@ -401,8 +440,9 @@ public class Driver {
 								board.setShippingUp(cards.currentCardValue(index));
 								board.setStoreUp(cards.currentCardValue(index));
 								board.setSteelUp(cards.currentCardValue(index));
+								cards.removeArray(cards.getIndex());
 							}
-							cards.removeArray(cards.getIndex());
+
 							i++;   
 
 						}
@@ -416,11 +456,11 @@ public class Driver {
 
 
 					}
-					cards.makeCards();
-					endingRound = 1;
+
 				}
 			}
-
+			cards.makeCards();
+			endingRound = 1;
 		}
 
 		return "Need more players";
@@ -445,12 +485,12 @@ public class Driver {
 				int a  = input.nextInt();
 				if (a < 6 && a > 0 && board.getMotor() != 0 && board.getMotorShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getMotor() * a){
-				playerNames.get(playerNumber).setMotorShares(a);
-				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getMotor() * a);
-				playerNames.get(playerNumber).setBalance(newBalance);
-				board.setMotorShares(board.getMotorShares() - a);
-				System.out.println("You bought " + a + " Motor Stocks" + "/n" + "Your new balance is: " + 
-				playerNames.get(playerNumber).getPlayerBalance());
+					playerNames.get(playerNumber).setMotorShares(a);
+					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getMotor() * a);
+					playerNames.get(playerNumber).setBalance(newBalance);
+					board.setMotorShares(board.getMotorShares() - a);
+					System.out.println("You bought " + a + " Motor Stocks" + "\n" + "Your new balance is: " + 
+							playerNames.get(playerNumber).getPlayerBalance());
 				}
 				else {
 					System.out.println("Value has to be between 1 and 5");
@@ -468,12 +508,12 @@ public class Driver {
 				int b  = input.nextInt();
 				if (b > 0 && b < 6 && board.getShipping() != 0 && board.getShippingShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getShipping() * b){
-				playerNames.get(playerNumber).setShippingShares(b);
-				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getShipping() * b);
-				playerNames.get(playerNumber).setBalance(newBalance);
-				board.setShippingShares(board.getShippingShares() - b);
-				System.out.println("You bought " + b + " Shipping Stocks" + "/n" + "Your new balance is: " + 
-						playerNames.get(playerNumber).getPlayerBalance());
+					playerNames.get(playerNumber).setShippingShares(b);
+					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getShipping() * b);
+					playerNames.get(playerNumber).setBalance(newBalance);
+					board.setShippingShares(board.getShippingShares() - b);
+					System.out.println("You bought " + b + " Shipping Stocks" + "\n" + "Your new balance is: " + 
+							playerNames.get(playerNumber).getPlayerBalance());
 				}
 				else {
 					System.out.println("Value has to be between 1 and 5");
@@ -490,12 +530,12 @@ public class Driver {
 			int c  = input.nextInt();
 			if (c > 0 && c < 6 && board.getStore() != 0 && board.getStoreShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 			board.getStore() * c){
-			playerNames.get(playerNumber).setStoreShares(c);
-			int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getStore() * c);
-			playerNames.get(playerNumber).setBalance(newBalance);
-			board.setStoreShares(board.getStoreShares() - c);
-			System.out.println("You bought " + c + " Store Stocks" + "/n" + "Your new balance is: " + 
-					playerNames.get(playerNumber).getPlayerBalance());
+				playerNames.get(playerNumber).setStoreShares(c);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getStore() * c);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setStoreShares(board.getStoreShares() - c);
+				System.out.println("You bought " + c + " Store Stocks" + "\n" + "Your new balance is: " + 
+						playerNames.get(playerNumber).getPlayerBalance());
 			}
 			else {
 				System.out.println("Value has to be between 1 and 5");
@@ -513,12 +553,12 @@ public class Driver {
 				int d  = input.nextInt();
 				if (d > 0 && d < 6 && board.getSteel() !=0 && board.getSteelShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
 				board.getSteel() * d){
-				playerNames.get(playerNumber).setSteelShares(d);
-				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getSteel() * d);
-				playerNames.get(playerNumber).setBalance(newBalance);
-				board.setSteelShares(board.getSteelShares() - d);
-				System.out.println("You bought " + d + " Steel Stocks" + "/n" + "Your new balance is: " + 
-						playerNames.get(playerNumber).getPlayerBalance());
+					playerNames.get(playerNumber).setSteelShares(d);
+					int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getSteel() * d);
+					playerNames.get(playerNumber).setBalance(newBalance);
+					board.setSteelShares(board.getSteelShares() - d);
+					System.out.println("You bought " + d + " Steel Stocks" + "\n" + "Your new balance is: " + 
+							playerNames.get(playerNumber).getPlayerBalance());
 				}
 				else {
 					System.out.println("Value has to be between 1 and 5");
@@ -560,21 +600,21 @@ public class Driver {
 			case 1:      System.out.println("how many motor shares would you like to sell?");
 			try {
 				int a  = input.nextInt();
-                if (a > 0 && a < 6 || a % 5 == 0)
-                	if(board.getMotor() != 0 && playerNames.get(playerNumber).getMotorShares() >= a){
-				playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getMotorShares()-a);
-				int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getMotor() * a);
-				playerNames.get(playerNumber).setBalance(newBalance);
-				board.setMotorShares(board.getMotorShares() + a);
-				System.out.println("You sold " + a + " Motor Stocks" + "/n" + "Your new balance is: " + 
-						playerNames.get(playerNumber).getPlayerBalance());
-                }
-                else {
-					System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
-							+ " you currently have" + playerNames.get(playerNumber).getMotorShares() + " Motor stocks");
-					
-					sellShares();
-				}
+				if (a > 0 && a < 6 || a % 5 == 0)
+					if(board.getMotor() != 0 && playerNames.get(playerNumber).getMotorShares() >= a){
+						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getMotorShares()-a);
+						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getMotor() * a);
+						playerNames.get(playerNumber).setBalance(newBalance);
+						board.setMotorShares(board.getMotorShares() + a);
+						System.out.println("You sold " + a + " Motor Stocks" + "\n" + "Your new balance is: " + 
+								playerNames.get(playerNumber).getPlayerBalance());
+					}
+					else {
+						System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "\n" + "Or you may not have enough stocks to sell"
+								+ " you currently have" + playerNames.get(playerNumber).getMotorShares() + " Motor stocks");
+
+						sellShares();
+					}
 			}
 			catch (Exception e){
 				String throwOut = input.nextLine();  //swallows
@@ -586,20 +626,20 @@ public class Driver {
 			case 2:      System.out.println("how many shipping shares would you like to sell?");
 			try {
 				int b  = input.nextInt();
-				 if (b > 0 && b < 6 || b % 5 == 0 )
+				if (b > 0 && b < 6 || b % 5 == 0 )
 					if (board.getShipping() != 0 && playerNames.get(playerNumber).getShippingShares() >= b){
-			playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getShippingShares()-b);
-			int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getShipping() * b);
-			playerNames.get(playerNumber).setBalance(newBalance);
-			board.setShippingShares(board.getShippingShares() + b);
-			System.out.println("You sold " + b + " Shipping Stocks" + "/n" + "Your new balance is: " + 
-					playerNames.get(playerNumber).getPlayerBalance());
-				 }
-				 else{
-					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getShippingShares()-b);
+						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getShipping() * b);
+						playerNames.get(playerNumber).setBalance(newBalance);
+						board.setShippingShares(board.getShippingShares() + b);
+						System.out.println("You sold " + b + " Shipping Stocks" + "\n" + "Your new balance is: " + 
+								playerNames.get(playerNumber).getPlayerBalance());
+					}
+					else{
+						System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "\n" + "Or you may not have enough stocks to sell"
 								+ " you currently have" + playerNames.get(playerNumber).getShippingShares() + " Shipping stocks");
-					sellShares();
-				 }
+						sellShares();
+					}
 			}
 			catch (Exception e){
 				String throwOut = input.nextLine();  //swallows
@@ -610,20 +650,20 @@ public class Driver {
 			case 3:     System.out.println("how many store shares would you like to sell?");
 			try {
 				int c  = input.nextInt();
-				 if (c > 0 && c < 6 || c % 5 == 0)
+				if (c > 0 && c < 6 || c % 5 == 0)
 					if (board.getStore() != 0 && playerNames.get(playerNumber).getStoreShares() >= c){
-				playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getStoreShares()-c);
-				int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getStore() * c);
-				playerNames.get(playerNumber).setBalance(newBalance);
-				board.setStoreShares(board.getStoreShares() + c);
-				System.out.println("You sold " + c + " Store Stocks" + "/n" + "Your new balance is: " + 
-						playerNames.get(playerNumber).getPlayerBalance());
-				 }
-				 else{
-					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getStoreShares()-c);
+						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getStore() * c);
+						playerNames.get(playerNumber).setBalance(newBalance);
+						board.setStoreShares(board.getStoreShares() + c);
+						System.out.println("You sold " + c + " Store Stocks" + "\n" + "Your new balance is: " + 
+								playerNames.get(playerNumber).getPlayerBalance());
+					}
+					else{
+						System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "\n" + "Or you may not have enough stocks to sell"
 								+ " you currently have" + playerNames.get(playerNumber).getStoreShares() + " Store stocks");
 						sellShares();
-					 }
+					}
 			}
 			catch (Exception e){
 				String throwOut = input.nextLine();  //swallows
@@ -636,18 +676,18 @@ public class Driver {
 				int d  = input.nextInt();
 				if (d > 0 && d < 6 || d % 5 == 0)
 					if(board.getSteel() != 0 && playerNames.get(playerNumber).getSteelShares() >= d){
-			playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getSteelShares()-d);
-			int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getSteel() * d);
-			playerNames.get(playerNumber).setBalance(newBalance);
-			board.setSteelShares(board.getSteelShares() + d);
-			System.out.println("You sold " + d + " Steel Stocks" + "/n" + "Your new balance is: " + 
-					playerNames.get(playerNumber).getPlayerBalance());
-				}
-				 else{
-					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+						playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getSteelShares()-d);
+						int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getSteel() * d);
+						playerNames.get(playerNumber).setBalance(newBalance);
+						board.setSteelShares(board.getSteelShares() + d);
+						System.out.println("You sold " + d + " Steel Stocks" + "\n" + "Your new balance is: " + 
+								playerNames.get(playerNumber).getPlayerBalance());
+					}
+					else{
+						System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "\n" + "Or you may not have enough stocks to sell"
 								+ " you currently have" + playerNames.get(playerNumber).getSteelShares() + " Steel stocks");
 						sellShares();
-					 }
+					}
 			}
 			catch (Exception e){
 				String throwOut = input.nextLine();  //swallows

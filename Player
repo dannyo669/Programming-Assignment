@@ -2,8 +2,6 @@
  * Holds information for the player such as name, balance and shares
  */
 
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -18,11 +16,13 @@ public class Player implements Serializable {
 	private int motorShares = 28;
 	private int shippingShares = 28;
 	private int index = 0;
-
-	private Scanner input;
 	private Board board;
 
-    //Constructs players name
+	/**
+	 * 
+	 * @param playerName
+	 * Constructor
+	 */
 	public Player(String playerName)
 	{
 		if (playerName.length() < 11)
@@ -34,28 +34,18 @@ public class Player implements Serializable {
 			this.playerName=playerName.substring(0, 10);
 		}
 
-		
+
 		board = new Board(1,1,1,1,1);
 	}
-	
-	public Player(){
-		board = new Board(1,1,1,1,1);
-	}
-	
-	//Sets the player balance to increase
-	public void setPlayerBalanceUp(int i){
-		this.playerBalance += i;
-	}
-    
-	//Sets the player balance to decrease
-	public void setPlayerBalanceDown(int i){
-		this.playerBalance -= i;
-	}
-	
-	//Allows players to buy Motor shares
+
+
+	/**
+	 * 
+	 * @param a
+	 * method to buy shares in motor
+	 */
 	public void buyShareMotor(int a){
-		int index;
-			if (a<motorShares){
+		if (a<motorShares){
 			if (a>0 && a<6){
 				if(board.getMotor() > 0){
 					if (playerBalance>board.getMotor()*a){
@@ -78,9 +68,13 @@ public class Player implements Serializable {
 			System.out.println("Not enough shares left " + motorShares + " shares left");
 		}
 	}
-	
-  //Allows player to buy Shipping sjares 
-  public void buyShareShipping(int b){
+
+	/**
+	 * 
+	 * @param b
+	 * method to buy shares in shipping
+	 */
+	public void buyShareShipping(int b){
 		if (b<shippingShares){
 			if (b>0 && b<6){
 				if(board.getShipping() != 0){
@@ -102,19 +96,22 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Not enough shares left " + shippingShares + " shares left");
 		}
-  }
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	
-  //Allows player to buy Store shares
-  public void buyShareStore(int c){
+	}
+
+
+
+
+
+
+
+
+
+	/**
+	 * 
+	 * @param c
+	 * method to buy shares in store
+	 */
+	public void buyShareStore(int c){
 		if (c<storeShares){
 			if (c>0 && c<6){
 				if(board.getStore() != 0){
@@ -136,10 +133,14 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Not enough shares left " + storeShares + " shares left");
 		}
-  }
+	}
 
-    //Allows player to buy steel shares
-    public void buySteelShares(int d){
+	/**
+	 * 
+	 * @param a
+	 * method to buy shares in steel
+	 */
+	public void buySteelShares(int d){
 		if (d<steelShares){
 			if (d>0 && d<6){
 				if(board.getSteel() != 0){
@@ -161,52 +162,60 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Not enough shares left " + steelShares + " shares left");
 		}
-    }
-		
-	
-    //Allows player to sell Motor shares
+	}
+
+
+	/**
+	 * 
+	 * @param a
+	 * method to sell shares in motor
+	 */
 	public void sellShareMotor(int a){
 		if (numberOfMotorShares > a){
 			if (a>0 && a<6){
 				if(board.getMotor() != 0){
-					    playerBalance +=board.getMotor()*a;
-						numberOfMotorShares -= a;
-						motorShares = motorShares + a;
-						System.out.println("You have sold" + a + " motor shares");
-					}
-					else if (a % 5 == 0)
-					{
-					    playerBalance +=board.getMotor()*a;
-						numberOfMotorShares -= a;
-						motorShares = motorShares + a;
-						System.out.println("You have sold" + a + " motor shares");
-					}
-					else {
-						System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
+					playerBalance +=board.getMotor()*a;
+					numberOfMotorShares -= a;
+					motorShares = motorShares + a;
+					System.out.println("You have sold" + a + " motor shares");
+				}
+				else if (a % 5 == 0)
+				{
+					playerBalance +=board.getMotor()*a;
+					numberOfMotorShares -= a;
+					motorShares = motorShares + a;
+					System.out.println("You have sold" + a + " motor shares");
+				}
+				else {
+					System.out.println("you must sell shares at a value of 1-5. After 5 in multiples of 5 (e.g. 5, 10, 15");
 				}
 			}
 			else {
 				System.out.println("You do not have enough shares. You currently have " + numberOfMotorShares + "motor shares");
 			}
-			}
-			else{
-				System.out.println("Max number of shares per turn is 5");
-			}
+		}
+		else{
+			System.out.println("Max number of shares per turn is 5");
+		}
 	}
-		
-	//Allows player to sell Shipping shares
+
+	/**
+	 * 
+	 * @param a
+	 * method to sell shares in shipping
+	 */
 	public void sellShareShipping(int b){
 		if (numberOfShippingShares > b){
 			if (b>0 && b<6){
 				if(board.getShipping() != 0){
-				    playerBalance +=board.getShipping()*b;
+					playerBalance +=board.getShipping()*b;
 					numberOfShippingShares -= b;
 					shippingShares = shippingShares + b;
 					System.out.println("You have sold" + b + " shipping shares");
 				}
 				else if (b % 5 == 0)
 				{
-				    playerBalance +=board.getShipping()*b;
+					playerBalance +=board.getShipping()*b;
 					numberOfShippingShares -= b;
 					shippingShares = shippingShares + b;
 					System.out.println("You have sold" + b + " shipping shares");
@@ -222,20 +231,24 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Max number of shares per turn is 5");
 		}}
-	
-	    //Allows player to sell Store shares
-		public void sellShareStore(int c){
+
+	/**
+	 * 
+	 * @param a
+	 * method to sell shares in store
+	 */
+	public void sellShareStore(int c){
 		if (numberOfStoreShares > c){
 			if (c>0 && c<6){
 				if(board.getStore() != 0){
-				    playerBalance +=board.getStore()*c;
+					playerBalance +=board.getStore()*c;
 					numberOfStoreShares -= c;
 					storeShares = storeShares + c;
 					System.out.println("You have sold" + c + " store shares");
 				}
 				else if (c % 5 == 0)
 				{
-				    playerBalance +=board.getStore()*c;
+					playerBalance +=board.getStore()*c;
 					numberOfStoreShares -= c;
 					storeShares = storeShares + c;
 					System.out.println("You have sold" + c + " store shares");
@@ -251,14 +264,18 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Max number of shares per turn is 5");
 		}
-		}
-		
-		 //Allows player to sell Steel shares
-		public void sellShareSteel(int d){
+	}
+
+	/**
+	 * 
+	 * @param a
+	 * method to sell shares in steel
+	 */
+	public void sellShareSteel(int d){
 		if (numberOfSteelShares > d){
 			if (d>0 && d<6){
 				if(board.getSteel() != 0){
-				    playerBalance +=board.getSteel()*d;
+					playerBalance +=board.getSteel()*d;
 					numberOfSteelShares -= d;
 					steelShares = steelShares + d;
 					System.out.println("You have sold" + d + " steel shares");
@@ -281,59 +298,60 @@ public class Player implements Serializable {
 		else{
 			System.out.println("Max number of shares per turn is 5");
 		}
-		}
-
-        //Sets player name
-		public  void  setPlayerName (String playerName)
-		{
-			if (playerName.length() < 10)
-			{
-			}
-			else
-			{
-				System.out.println("Player Name has to be under 10 characters");
-			}
-		}
-
-		//Gets player name
-		public String getPlayerName() {
-			return playerName;
-		}
- 
-		//Gets player balance
-		public int getPlayerBalance(){
-			return playerBalance;
-
-		}
-
-		//Gets Steel shares
-		public int getSteelShares(){
-			return numberOfSteelShares;
-		}
-		
-        //Gets Store shares
-		public int getStoreShares(){
-			return numberOfStoreShares;
-		}
-
-		//Gets Shipping shares
-		public int getShippingShares(){
-			return numberOfShippingShares;
-		}
-
-		//Gets Motor share
-		public int getMotorShares(){
-			return numberOfMotorShares;
-		}
-
-		//Gets  all shares
-		public String getAllShares(){
-			return ("Motor: " + numberOfMotorShares + "\n" + "Shipping: " + numberOfShippingShares + "\n" + "Store: " + 
-		            numberOfStoreShares + "\n" + "Steel: " + numberOfSteelShares + "\n");
-		}
-		
-        //Sets index
-        public void setIndex(){
-        	this.index++;
-        }
 	}
+
+
+	/**
+	 * 
+	 * @return the player balance
+	 */
+	public int getPlayerBalance(){
+		return playerBalance;
+	}
+
+	/**
+	 * 
+	 * @return number of steel shares 
+	 */
+	public int getSteelShares(){
+		return numberOfSteelShares;
+	}
+
+	/**
+	 * 
+	 * @return number of store shares
+	 */
+	public int getStoreShares(){
+		return numberOfStoreShares;
+	}
+
+	/**
+	 * 
+	 * @return number of shipping shares
+	 */
+	public int getShippingShares(){
+		return numberOfShippingShares;
+	}
+
+	/**
+	 * 
+	 * @return number of motor shares
+	 */
+	public int getMotorShares(){
+		return numberOfMotorShares;
+	}
+
+	/**
+	 * 
+	 * @return all shares
+	 */
+	public String getAllShares(){
+		return ("Motor: " + numberOfMotorShares + "\n" + "Shipping: " + numberOfShippingShares + "\n" + "Store: " + 
+				numberOfStoreShares + "\n" + "Steel: " + numberOfSteelShares + "\n");
+	}
+
+	//Sets index
+	public void setIndex(){
+		this.index++;
+	}
+}

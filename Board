@@ -1,208 +1,235 @@
 /**
- * @author Jamie Doyle,Daiel Ivers, Danny O'Leary and Adam O'Reilly
+ * The Board Class holds stock prices values, round values and also store a list of the rules of the games.
+ * @author Jamie Doyle, Daiel Ivers, Danny O'Leary and Adam O'Reilly
  */
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 import java.io.Serializable;
 
-
+/**
+ * 
+ *  Board has instance variables to store each of the values and it is Serializable so later it can be saved and then loaded 
+ *  back into the game.
+ *
+ */
 public class Board implements Serializable {
-private int steel;
-private int store;
-private int motor;
-private int shipping;
-private int round;
-private Scanner input;
+	private int steel;
+	private int store;
+	private int motor;
+	private int shipping;
+	private int round;
 
 
-//Constructor
-public Board(int steel, int store, int motor, int shipping, int round)
-{	
-	
-	if (this.steel>20){
-		this.steel=20;
-	}
-	else if(this.steel<0){
-		this.steel=0;
-	}
-	else{
-		this.steel=steel;
-	}
-	
-	if (this.store>20){
-		this.store=20;
-	}
-	else if(this.store<0){
-		this.store=0;
-	}
-	else{
-		this.store=store;
-	}
-	
-	if (this.motor>20){
-		this.store=20;
-	}
-	else if(this.motor<0){
-		this.motor=0;
-	}
-	else{
-		this.motor=motor;
-	}
-	
-	if (this.shipping>20){
-		this.shipping=20;
-	}
-	else if(this.shipping<0){
-		this.shipping=0;
-	}
-	else{
-		this.shipping=shipping;
-	}
+	/**
+	 * Constructor
+	 * @param steel
+	 * @param store
+	 * @param motor
+	 * @param shipping
+	 * @param round
+	 * parameter for each of the different instance variables along with the required validation around them.
+	 */
+	public Board(int steel, int store, int motor, int shipping, int round)
+	{	
 
-	this.round=round;
-}
+		if (this.steel>20){
+			this.steel=20;
+		}
+		else if(this.steel<0){
+			this.steel=0;
+		}
+		else{
+			this.steel=steel;
+		}
 
-//Gets the round
-public int getRound (){
-return round;
-}
+		if (this.store>20){
+			this.store=20;
+		}
+		else if(this.store<0){
+			this.store=0;
+		}
+		else{
+			this.store=store;
+		}
 
-//Lets the round increse by 1
-public void setRound (){
-		this.round++;
-	}
-	
-//Gets the counters position on the different shares
-public String getCounterPositions()
-{
-	return toString();
-}
+		if (this.motor>20){
+			this.store=20;
+		}
+		else if(this.motor<0){
+			this.motor=0;
+		}
+		else{
+			this.motor=motor;
+		}
 
-//Gets Steel card
-public int getSteel()
-{
-	return steel;
-}
-
-//Gets Store card
-public int getStore(){
-	return store;
-}
-
-//Gets Motor card
-public int getMotor(){
-	return this.motor;
-}
-
-//Gets Shipping card
-public int getShipping(){
-	return shipping;
-}
-
-//Sets up Steel card up
-public void setSteelUp(int steel){
-	this.steel += steel; 
-	if(this.steel > 20){
-		this.steel=20;
-	}
-}
-
-//Sets up steel card down
-public void setSteelDown(int steel){
-	this.steel -= steel;
-	if(this.steel <0){
-		this.steel=0;
-	}
-}
-
-//Sets up Store card up
-public void setStoreUp(int store){
-	this.store += store;
-	 if(this.store > 20){
-		this.store=20;
-	}
-}
-
-//Sets up Store card down
-public void setStoreDown(int store){
-	this.store -= store;
-	if(this.store <0){
-		this.store=0;
-	}
-}
-
-//Sets up Shipping card up
-public void setShippingUp(int shipping){
-	this.shipping += shipping;
-	 if(this.shipping > 20){
+		if (this.shipping>20){
 			this.shipping=20;
 		}
-}
+		else if(this.shipping<0){
+			this.shipping=0;
+		}
+		else{
+			this.shipping=shipping;
+		}
 
-//Sets up Shipping card down
-public void setShippingDown(int shipping){
-	this.shipping -= shipping;
-	if(this.shipping <0){
-		this.shipping=0;
+		this.round=round;
 	}
-}
 
-//Sets up Motor cad down
-public void setMotorDown(int motor){
-	this.motor -= motor;
-	if(this.motor <0){
-		this.steel=0;
+	/**
+	 * 
+	 * @return the round that it currently is on
+	 */
+	public int getRound (){
+		return round;
 	}
-	
-}
 
-//Sets up Motor card up
-public void setMotorUp(int motor){
-	this.motor += motor;
-	if(this.steel > 20){
-		this.steel=20;
+	/**
+	 * Method to call to increment the round by one every time. 
+	 */
+	public void setRound (){
+		this.round++;
 	}
+
+
+	/**
+	 * @return the current price for steel
+	 */
+	public int getSteel()
+	{
+		return steel;
+	}
+
+	/**
+	 * @return the current price for store
+	 */
+	public int getStore(){
+		return store;
+	}
+
+	/**
+	 * @return the current price for motor
+	 */
+	public int getMotor(){
+		return this.motor;
+	}
+
+	/**
+	 * @return the current price for shipping
+	 */
+	public int getShipping(){
+		return shipping;
+	}
+
+	/**
+	 * 
+	 * @param steel is used to set the current steel price when it is going up. 
+	 */
+	public void setSteelUp(int steel){
+		this.steel += steel; 
+	}
+
+	/**
+	 * 
+	 * @param steel is used to set the current steel price  when it is going down. 
+	 */
+	public void setSteelDown(int steel){
+		this.steel -= steel;
+	}
+
+	/**
+	 * 
+	 * @param store is used to set the current store price when it is going up. 
+	 */
+	public void setStoreUp(int store){
+		this.store += store;
+		if(this.store > 20){
+			this.store=20;
+		}
+	}
+
+	/**
+	 * 
+	 * @param store is used to set the current store price when it is going down. 
+	 */
+	public void setStoreDown(int store){
+		this.store -= store;
+	}
+
+	/**
+	 * 
+	 * @param shipping is used to set the current shipping price when it is going up. 
+	 */
+	public void setShippingUp(int shipping){
+		this.shipping += shipping;
+	}
+
+	/**
+	 * 
+	 * @param shipping is used to set the current store price when it is going down. 
+	 */
+	public void setShippingDown(int shipping){
+		this.shipping -= shipping;
+	}
+
+	/**
+	 * 
+	 * @param motor is used to set the current motor price when it is going down. 
+	 */
+	public void setMotorDown(int motor){
+		this.motor -= motor;
+
+	}
+
+	/**
+	 * 
+	 * @param motor is used to set the current motor price when it is going up. 
+	 */
+	public void setMotorUp(int motor){
+		this.motor += motor;
+		if(this.steel > 20){
+			this.steel=20;
+		}
+	}
+
+	/**
+	 * 
+	 * @returns a string of all the rules of the game so people know how to play it.
+	 */
+	public String rules(){
+		return("Rules of Stocks and Shares" + "\n" +"\n"
+				+ "Four Types of Stock Commodity."+ "\n" + "There are 28 shares for each Commodity." + "\n" + "Each commodity can go up and down on the stock market." + "\n" 
+				+  "\n" +"26 Cards" + "\n" + "1 Bear Card (all four commodities down £4)" + "\n" + "1 Bull Card (all four commodities up £4)" + "\n" + "Each commodity has six cards." + "\n" + "Down £4, Down £3, Down £2, Up £2, Up £3 and Up £4." +"\n" + "The “Share Price Indicator” on Board (max price is £20 and min price is £0)" +"\n" +"\n" 
+				+ "How to play" +"\n" +"\n" + "There must be at least 3 players and no more than 6" + "\n" + "The object is, by buying or selling shares, to be the player with the most money at the end of the game" + "\n" 
+				+ "There are four kinds of shares.  During the game the values of the shares rise and fall according to the cards which affect them." + "\n"
+				+ "One card is dealt randomly to each player.  Players in turn decide whether to buy or sell shares by looking at their card and by drawing deductions from what other players’ have done." + "\n" + "\n"
+				+ "After the buying and selling is finished, the players expose their cards" +"\n" + "and the value of the shares are moved up or down on the “Share Price Indicator” board in accordance with the instructions on the exposed cards." +"\n"
+				+ "A single card each is again dealt and buying and selling of shares is done at the new values on the board.  There are 12 rounds of buying and selling in the game." + "\n"
+				+ "Players consequently make profits and losses throughout the game, depending on their skill in selling shares at a higher price than they paid for them." + "\n"
+				+ "The winner is the player who ends the game with the most money." +"\n" +"\n"
+				+ "At the start of the game" +"\n"
+				+ "Each player gets £80 of currency" +"\n"
+				+ "The share price for each commodity is set to £10 on the “Share Price Indicator” board." +"\n" +"\n" 
+				+ "Round 1" +"\n"
+				+ "Each player is dealt a card randomly (in each round only one card can appear once). This card is kept secret from other players." + "\n"
+				+ "Each player takes their turn deciding whether to buy shares or pass." +"\n" + "A player can buy up to or including 5 of any kind of commodity.  If they want more than 5, of a kind, s/he must by multiples of 5 e.g. 10, 15, 20, etc.  The player must have enough money to buy the shares and there must be enough shares left to buy." +"\n" 	
+				+ "If a player decides to buy shares, they are £10 each in the first round.  The number of shares for each commodity they buy are deducted from the total of available shares for that commodity." + "\n" + "\n"
+				+ "Scoring at the end of Round 1" +"\n"
+				+ "When each player has taken their turn, each player’s card is displayed and the values of the shares increase or decrease based on the values of the cards. Note: A bear card, all down £4.  A bull card, all up £4." + "\n" + "\n" 
+				+ "Subsequent Rounds" +"\n" 
+				+ "The play and scoring for all subsequent rounds are exactly the same as for the first round, except that, in addition to buying, a player who holds shares can sell them as the price shown on the “Share Price Indicator” board." + "\n" 
+				+ "Shares cannot go higher than £20 or drop below £0.  Shares cannot be bought or sold at £0." +"\n" +"\n" 
+				+ "End of Game" +"\n"
+				+ "The game ends when 12 rounds have been played." +"\n" 
+				+ "All players now sell their shares according to the values on the “Share Price Indicator” board.  This amount is added to their existing cash."  +"\n"
+				+ "The winner is determined as the player with the most money!");
+	}
+
+	/**
+	 * @return a string representation of the object stock prices
+	 */
+	public String toString()
+	{
+		return("The current price for steel is:    £" + this.steel + "    The current price for store is:    £"
+				+ this.store + "    The current price for motor is:    £" + this.motor + "    The current price for shipping is:    £" + this.shipping);
+	}
+
 }
-
-//Rules to playing Stocks and Shares
-public String rules(){
-	return("Rules of Stocks and Shares" + "\n" +"\n"
-					+ "Four Types of Stock Commodity."+ "\n" + "There are 28 shares for each Commodity." + "\n" + "Each commodity can go up and down on the stock market." + "\n" 
-					+  "\n" +"26 Cards" + "\n" + "1 Bear Card (all four commodities down £4)" + "\n" + "1 Bull Card (all four commodities up £4)" + "\n" + "Each commodity has six cards." + "\n" + "Down £4, Down £3, Down £2, Up £2, Up £3 and Up £4." +"\n" + "The “Share Price Indicator” on Board (max price is £20 and min price is £0)" +"\n" +"\n" 
-					+ "How to play" +"\n" +"\n" + "There must be at least 3 players and no more than 6" + "\n" + "The object is, by buying or selling shares, to be the player with the most money at the end of the game" + "\n" 
-					+ "There are four kinds of shares.  During the game the values of the shares rise and fall according to the cards which affect them." + "\n"
-					+ "One card is dealt randomly to each player.  Players in turn decide whether to buy or sell shares by looking at their card and by drawing deductions from what other players’ have done." + "\n" + "\n"
-                    + "After the buying and selling is finished, the players expose their cards" +"\n" + "and the value of the shares are moved up or down on the “Share Price Indicator” board in accordance with the instructions on the exposed cards." +"\n"
-					+ "A single card each is again dealt and buying and selling of shares is done at the new values on the board.  There are 12 rounds of buying and selling in the game." + "\n"
-					+ "Players consequently make profits and losses throughout the game, depending on their skill in selling shares at a higher price than they paid for them." + "\n"
-					+ "The winner is the player who ends the game with the most money." +"\n" +"\n"
-					+ "At the start of the game" +"\n"
-					+ "Each player gets £80 of currency" +"\n"
-					+ "The share price for each commodity is set to £10 on the “Share Price Indicator” board." +"\n" +"\n" 
-					+ "Round 1" +"\n"
-					+ "Each player is dealt a card randomly (in each round only one card can appear once). This card is kept secret from other players." + "\n"
-					+ "Each player takes their turn deciding whether to buy shares or pass." +"\n" + "A player can buy up to or including 5 of any kind of commodity.  If they want more than 5, of a kind, s/he must by multiples of 5 e.g. 10, 15, 20, etc.  The player must have enough money to buy the shares and there must be enough shares left to buy." +"\n" 	
-					+ "If a player decides to buy shares, they are £10 each in the first round.  The number of shares for each commodity they buy are deducted from the total of available shares for that commodity." + "\n" + "\n"
-					+ "Scoring at the end of Round 1" +"\n"
-					+ "When each player has taken their turn, each player’s card is displayed and the values of the shares increase or decrease based on the values of the cards. Note: A bear card, all down £4.  A bull card, all up £4." + "\n" + "\n" 
-					+ "Subsequent Rounds" +"\n" 
-					+ "The play and scoring for all subsequent rounds are exactly the same as for the first round, except that, in addition to buying, a player who holds shares can sell them as the price shown on the “Share Price Indicator” board." + "\n" 
-					+ "Shares cannot go higher than £20 or drop below £0.  Shares cannot be bought or sold at £0." +"\n" +"\n" 
-					+ "End of Game" +"\n"
-					+ "The game ends when 12 rounds have been played." +"\n" 
-					+ "All players now sell their shares according to the values on the “Share Price Indicator” board.  This amount is added to their existing cash."  +"\n"
-					+ "The winner is determined as the player with the most money!");
-}
-
-//Returns a string representation of the object
-public String toString()
-{
-	return("The current price for steel is:    £" + this.steel + "    The current price for store is:    £"
-+ this.store + "    The current price for motor is:    £" + this.motor + "    The current price for shipping is:    £" + this.shipping);
-}
-
-}
-
-

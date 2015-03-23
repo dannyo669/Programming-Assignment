@@ -1,5 +1,5 @@
 /**
- * Cards holds all the types of cards
+ * The card class creates an ArrayList for all the different type of cards in the game.
  */
 
 import java.util.ArrayList;
@@ -14,14 +14,19 @@ public class Cards {
 	private CardSetup idk;
 	private int index;
 	ArrayList<CardSetup> cards = new ArrayList<CardSetup>();
-	
+
+	/**
+	 * Constructor for Cards. makeCards makes the cards at the beginning so we don't have to call the method.
+	 */
 	public Cards(){
 		makeCards();
 		index=0;
 		randomGenerator = new Random();
 	}
 
-    //Makes the cards
+	/**
+	 * Populates the ArrayList with all the different types of cards.
+	 */
 	public void makeCards(){
 		idk = new CardSetup("Bull", "Up: £", 4);
 		cards.add(idk);
@@ -31,61 +36,77 @@ public class Cards {
 		{
 			for (int a=0; a<=1; a++){
 				for (int b=0; b<=2; b++){
-				idk = new CardSetup(stockTypes[i], upOrDown[a], prices[b] );
-				cards.add(idk);
+					idk = new CardSetup(stockTypes[i], upOrDown[a], prices[b] );
+					cards.add(idk);
 				}
 
 			}
 		}
 	}
 
-//Allows players to checkwhatcar they drew
-public String checkCards(){
-	String str="";
-	for (int i=0; i<=25; i++){
-	str += cards.get(i).getCardType() + cards.get(i).getCardNumber();
+
+	/**
+	 * 
+	 * @return the index of a card
+	 */
+	public int getIndex(){
+		return index;
 	}
-	return str;
-}
 
-//Gets index of card
-public int getIndex(){
-	return index;
-}
+	/**
+	 * 
+	 * @param index remove a card from the array at a given index.
+	 */
+	public void removeArray(int index){
+		cards.remove(index);
+	}
 
-//Removes index 
-public void removeArray(int index){
-	cards.remove(index);
-}
+	/**
+	 * 
+	 * @return the current cards index
+	 */
+	public CardSetup currentCard(){
+		return cards.get(index);
+	}
 
-//Gets index from current card
-public CardSetup currentCard(){
-	return cards.get(index);
-}
+	/**
+	 * 
+	 * @param index2
+	 * @return the current cards type eg. steel, store etc.
+	 */
+	public String currentCardType(int index2){
+		return cards.get(index).getCardType();
+	}
 
-//Shows the current card type pulled
-public String currentCardType(int index2){
-	return cards.get(index).getCardType();
-}
+	/**
+	 * 
+	 * @param index
+	 * @return the current value of the card eg. 2,3 or 4
+	 */
+	public int currentCardValue(int index){
+		return cards.get(index).getCardNumber();
+	}
 
-//Gets current card value
-public int currentCardValue(int index){
-	return cards.get(index).getCardNumber();
-}
+	/**
+	 * 
+	 * @param index
+	 * @return if the current card is up or down.
+	 */
+	public String currentUpOrDown(int index){
+		return cards.get(index).getUpOrDown();
+	}
 
-//Determines whether the value increase or decreases shares
-public String currentUpOrDown(int index){
-	return cards.get(index).getUpOrDown();
+	/**
+	 * 
+	 * @return a string from a randomly generated card from the ArrayList.
+	 */
+	public String drawCard(){
+		this.index = randomGenerator.nextInt(cards.size());
+		String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
+				"  |"    + "\n" + "|     "
+				+ "   |"  + "\n" + "|        |"  + "\n" + "| " +  cards.get(index).getUpOrDown() + cards.get(index).getCardNumber() 
+				+ "  |" + "\n" 
+				+ " ¯¯¯¯¯¯¯¯");
+		return str;
+	}
 }
-
-//Allows player to draw a card randomly
-public String drawCard(){
-	this.index = randomGenerator.nextInt(cards.size());
-	String str = (" ________" + "\n" + "|        |" + "\n" + "| " + cards.get(index).getCardType() + 
-			"  |"    + "\n" + "|     "
-           		+ "   |"  + "\n" + "|        |"  + "\n" + "| " +  cards.get(index).getUpOrDown() + cards.get(index).getCardNumber() 
-           		+ "  |" + "\n" 
-			     + " ¯¯¯¯¯¯¯¯");
-	return str;
-}
- }

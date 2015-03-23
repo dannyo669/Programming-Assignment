@@ -32,6 +32,7 @@ public class Driver {
 	{
 		input = new Scanner(System.in);
 		board = new Board(10,10,10,10,1);
+
 		cards = new Cards();
 		i=0;
 		playerNumber = 0;
@@ -54,28 +55,28 @@ public class Driver {
 	{
 		System.out.println("Enter the number of players: ");
 		try{
-		int i = input.nextInt();
-		if (i>=3 && i < 7)
-		{
-			this.i=i;
-			run();
-		}
-		else
-		{
-			System.out.println("Invalid Number of Players, has to be between 3 and 6");
-			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine();
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			numberOfPlayers();
-		}}
+			int i = input.nextInt();
+			if (i>=3 && i < 7)
+			{
+				this.i=i;
+				run();
+			}
+			else
+			{
+				System.out.println("Invalid Number of Players, has to be between 3 and 6");
+				System.out.println("\nPress any key to continue...");
+				input.nextLine();
+				input.nextLine();
+				//clear the terminal window and display the main menu again
+				System.out.println("\f");
+				numberOfPlayers();
+			}}
 		catch (Exception e)
-          { 
+		{ 
 			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Num expected - you entered  text");
-	    	numberOfPlayers();
-          }
+			System.out.println("Num expected - you entered  text");
+			numberOfPlayers();
+		}
 
 
 
@@ -100,10 +101,10 @@ public class Driver {
 					addPlayer();
 				}
 				catch (Exception e){
-					 
+
 					String throwOut = input.nextLine();  //swallows
-			    	System.out.println("Invalid data");
-			    	run();
+					System.out.println("Invalid data");
+					run();
 				}
 				break;
 				case 2:  load();
@@ -134,10 +135,14 @@ public class Driver {
 		else{
 			int i =0;
 			for (Player player: playerNames){
-				playerNames.get(i).sellShareMotor(player.getMotorShares());
-				playerNames.get(i).sellShareSteel(player.getSteelShares());
-				playerNames.get(i).sellShareStore(player.getStoreShares());
-				playerNames.get(i).sellShareShipping(player.getShippingShares());
+				playerNames.get(i).setBalance(board.getMotor() * playerNames.get(playerNumber).getMotorShares());
+				playerNames.get(i).setMotorShares(0);
+				playerNames.get(i).setBalance(board.getSteel() * playerNames.get(playerNumber).getSteelShares());
+				playerNames.get(i).setSteelShares(0);
+				playerNames.get(i).setBalance(board.getStore() * playerNames.get(playerNumber).getStoreShares());
+				playerNames.get(i).setStoreShares(0);
+				playerNames.get(i).setBalance(board.getShipping() * playerNames.get(playerNumber).getShippingShares());
+				playerNames.get(i).setShippingShares(0);
 				i++;
 			}
 			if (playerNames.size() > 0)
@@ -170,7 +175,7 @@ public class Driver {
 			switch (option)
 			{
 			case 1:    if (endingRound == 0){
-				       drawingCards();
+				drawingCards();
 			}
 			else {
 				System.out.println("Cards have already been drawn!");
@@ -231,7 +236,7 @@ public class Driver {
 				else{
 					playerNumber++;
 					secondMenu();
-					
+
 				}                                      
 				break;
 				}
@@ -317,14 +322,14 @@ public class Driver {
 		{
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
 			try {
-			String c = input.next();
-			Player player = new Player(c);
-			playerNames.add(player);
+				String c = input.next();
+				Player player = new Player(c);
+				playerNames.add(player);
 			}
 			catch (Exception e){
 				String throwOut = input.nextLine();  //swallows
-		    	System.out.println("Error invalid data");
-		    	addPlayer();
+				System.out.println("Error invalid data");
+				addPlayer();
 			}
 		}
 	}
@@ -342,80 +347,80 @@ public class Driver {
 				{
 					System.out.println("Player" + i + " are you ready to draw your card? press Y when ready");
 					try{
-					String newStatus = input.next();
-					if (newStatus.toLowerCase().equals("y"))
-					{
-						System.out.println(cards.drawCard());
-						int index = cards.getIndex();
-						if (cards.currentCardType(index).equals("Store")){
-							if (cards.currentUpOrDown(index).equals("Up: £")){
-								board.setStoreUp(cards.currentCardValue(index));
+						String newStatus = input.next();
+						if (newStatus.toLowerCase().equals("y"))
+						{
+							System.out.println(cards.drawCard());
+							int index = cards.getIndex();
+							if (cards.currentCardType(index).equals("Store")){
+								if (cards.currentUpOrDown(index).equals("Up: £")){
+									board.setStoreUp(cards.currentCardValue(index));
+								}
+
+								else {
+									board.setStoreDown(cards.currentCardValue(index));
+								}
 							}
 
-							else {
+							if (cards.currentCardType(index).equals("Steel")){
+								if (cards.currentUpOrDown(index).equals("Up: £")){
+									board.setSteelUp(cards.currentCardValue(index));
+								}
+								else {
+									board.setSteelDown(cards.currentCardValue(index));
+								}
+							}
+
+							if (cards.currentCardType(index).equals("Shipping")){
+								if (cards.currentUpOrDown(index).equals("Up: £")){
+									board.setShippingUp(cards.currentCardValue(index));
+								}
+								else {
+									board.setShippingDown(cards.currentCardValue(index));
+								}
+							}
+
+							if (cards.currentCardType(index).equals("Motor")){
+								if (cards.currentUpOrDown(index).equals("Up: £")){
+									board.setMotorUp(cards.currentCardValue(index));
+								}
+								else {
+									board.setMotorDown(cards.currentCardValue(index));
+								}      
+
+							}
+							if (cards.currentCardType(index).equals("Bear")){
+								board.setMotorDown(cards.currentCardValue(index));
+								board.setShippingDown(cards.currentCardValue(index));
 								board.setStoreDown(cards.currentCardValue(index));
-							}
-						}
-
-						if (cards.currentCardType(index).equals("Steel")){
-							if (cards.currentUpOrDown(index).equals("Up: £")){
-								board.setSteelUp(cards.currentCardValue(index));
-							}
-							else {
 								board.setSteelDown(cards.currentCardValue(index));
 							}
-						}
 
-						if (cards.currentCardType(index).equals("Shipping")){
-							if (cards.currentUpOrDown(index).equals("Up: £")){
-								board.setShippingUp(cards.currentCardValue(index));
-							}
-							else {
-								board.setShippingDown(cards.currentCardValue(index));
-							}
-						}
-
-						if (cards.currentCardType(index).equals("Motor")){
-							if (cards.currentUpOrDown(index).equals("Up: £")){
+							if (cards.currentCardType(index).equals("Bull")){
 								board.setMotorUp(cards.currentCardValue(index));
+								board.setShippingUp(cards.currentCardValue(index));
+								board.setStoreUp(cards.currentCardValue(index));
+								board.setSteelUp(cards.currentCardValue(index));
 							}
-							else {
-								board.setMotorDown(cards.currentCardValue(index));
-							}      
+							cards.removeArray(cards.getIndex());
+							i++;   
 
-						}
-						if (cards.currentCardType(index).equals("Bear")){
-							board.setMotorDown(cards.currentCardValue(index));
-							board.setShippingDown(cards.currentCardValue(index));
-							board.setStoreDown(cards.currentCardValue(index));
-							board.setSteelDown(cards.currentCardValue(index));
-						}
-
-						if (cards.currentCardType(index).equals("Bull")){
-							board.setMotorUp(cards.currentCardValue(index));
-							board.setShippingUp(cards.currentCardValue(index));
-							board.setStoreUp(cards.currentCardValue(index));
-							board.setSteelUp(cards.currentCardValue(index));
-						}
-						cards.removeArray(cards.getIndex());
-						i++;   
-					
 						}
 					}
 
 					catch (Exception e){
 						String throwOut = input.nextLine();  //swallows
-				    	System.out.println("Error Invalid Data");
-				    	drawingCards();
-					
-					
-					
+						System.out.println("Error Invalid Data");
+						drawingCards();
+
+
+
+					}
+					cards.makeCards();
+					endingRound = 1;
 				}
-				cards.makeCards();
-				endingRound = 1;
 			}
-			}
-			
+
 		}
 
 		return "Need more players";
@@ -433,61 +438,108 @@ public class Driver {
 		System.out.println("   4)  Steel");
 		System.out.println("   0)  Exit");
 		try{
-		int i = input.nextInt();
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to buy?");
-		try{
-		int a  = input.nextInt();
-		playerNames.get(index).buyShareMotor(a);
-		}
-		catch (Exception e){
-			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Error Invalid Data");
-	    	buyShares();
-		}
-		break;
-		case 2:      System.out.println("how many shipping shares would you like to buy?");
-		try{
-		int b  = input.nextInt();
-		playerNames.get(index).buyShareShipping(b);
-		}
-		catch (Exception e){
-			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Error Invalid Data");
-	    	buyShares();
-		}
-		break;
-		case 3:     System.out.println("how many store shares would you like to buy?");
-		try{
-		int c  = input.nextInt();
-		playerNames.get(index).buyShareStore(c);
-		}
-		catch (Exception e){
-			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Error Invalid Data");
-	    	buyShares();
-		}
-		break;
-		case 4:       System.out.println("how many steel shares would you like to buy?");
-		try{
-		int d  = input.nextInt();
-		playerNames.get(index).buySteelShares(d);
-		}
-		catch (Exception e){
-		String throwOut = input.nextLine();  //swallows
-    	System.out.println("Error Invalid Data");
-    	buyShares();
-		}
-		break;
-		case 0:    mainMenuThree();
-		break;
+			int i = input.nextInt();
+			switch (i){
+			case 1:      System.out.println("how many motor shares would you like to buy?");
+			try{
+				int a  = input.nextInt();
+				if (a < 6 && a > 0 && board.getMotor() != 0 && board.getMotorShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				board.getMotor() * a){
+				playerNames.get(playerNumber).setMotorShares(a);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getMotor() * a);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setMotorShares(board.getMotorShares() - a);
+				System.out.println("You bought " + a + " Motor Stocks" + "/n" + "Your new balance is: " + 
+				playerNames.get(playerNumber).getPlayerBalance());
+				}
+				else {
+					System.out.println("Value has to be between 1 and 5");
+					buyShares();
+				}
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
+			}
+			break;
+			case 2:      System.out.println("how many shipping shares would you like to buy?");
+			try{
+				int b  = input.nextInt();
+				if (b > 0 && b < 6 && board.getShipping() != 0 && board.getShippingShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				board.getShipping() * b){
+				playerNames.get(playerNumber).setShippingShares(b);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getShipping() * b);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setShippingShares(board.getShippingShares() - b);
+				System.out.println("You bought " + b + " Shipping Stocks" + "/n" + "Your new balance is: " + 
+						playerNames.get(playerNumber).getPlayerBalance());
+				}
+				else {
+					System.out.println("Value has to be between 1 and 5");
+					buyShares();
+				}
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
+			}
+			break;
+			case 3:     try{System.out.println("how many store shares would you like to buy?");
+			int c  = input.nextInt();
+			if (c > 0 && c < 6 && board.getStore() != 0 && board.getStoreShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+			board.getStore() * c){
+			playerNames.get(playerNumber).setStoreShares(c);
+			int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getStore() * c);
+			playerNames.get(playerNumber).setBalance(newBalance);
+			board.setStoreShares(board.getStoreShares() - c);
+			System.out.println("You bought " + c + " Store Stocks" + "/n" + "Your new balance is: " + 
+					playerNames.get(playerNumber).getPlayerBalance());
+			}
+			else {
+				System.out.println("Value has to be between 1 and 5");
+				buyShares();
+			}
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
+			}
+			break;
+			case 4:       System.out.println("how many steel shares would you like to buy?");
+			try{
+				int d  = input.nextInt();
+				if (d > 0 && d < 6 && board.getSteel() !=0 && board.getSteelShares() != 0 && playerNames.get(playerNumber).getPlayerBalance() > 
+				board.getSteel() * d){
+				playerNames.get(playerNumber).setSteelShares(d);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() - (board.getSteel() * d);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setSteelShares(board.getSteelShares() - d);
+				System.out.println("You bought " + d + " Steel Stocks" + "/n" + "Your new balance is: " + 
+						playerNames.get(playerNumber).getPlayerBalance());
+				}
+				else {
+					System.out.println("Value has to be between 1 and 5");
+					buyShares();
+				}
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
+			}
+			break;
+			case 0:    mainMenuThree();
+			break;
 
-		}
+			}
 		}
 		catch (Exception e){
 			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Error Invalid Data");
-	    	buyShares();
+			System.out.println("Error Invalid Data");
+			buyShares();
 		}
 	}
 
@@ -497,39 +549,121 @@ public class Driver {
 	public void sellShares(){
 		int index =0;
 		try{
-		System.out.println("Which type of share would you like to sell?:  ");	
-		System.out.println("   1)  Motor");
-		System.out.println("   2)  Shipping");
-		System.out.println("   3)  Store");
-		System.out.println("   4)  Steel");
-		System.out.println("   0)  Exit");
-		int i = input.nextInt();
-		switch (i){
-		case 1:      System.out.println("how many motor shares would you like to sell?");
-		int a  = input.nextInt();
-		playerNames.get(index).sellShareMotor(a);
-		break;
-		case 2:      System.out.println("how many shipping shares would you like to sell?");
-		int b  = input.nextInt();
-		playerNames.get(index).sellShareMotor(b);
-		break;
-		case 3:     System.out.println("how many store shares would you like to sell?");
-		int c  = input.nextInt();
-		playerNames.get(index).sellShareStore(c);
-		break;
-		case 4:       System.out.println("how many steel shares would you like to sell?");
-		int d  = input.nextInt();
-		playerNames.get(index).sellShareSteel(d);
-		break;
+			System.out.println("Which type of share would you like to sell?:  ");	
+			System.out.println("   1)  Motor");
+			System.out.println("   2)  Shipping");
+			System.out.println("   3)  Store");
+			System.out.println("   4)  Steel");
+			System.out.println("   0)  Exit");
+			int i = input.nextInt();
+			switch (i){
+			case 1:      System.out.println("how many motor shares would you like to sell?");
+			try {
+				int a  = input.nextInt();
+                if (a > 0 && a < 6 || a % 5 == 0)
+                	if(board.getMotor() != 0 && playerNames.get(playerNumber).getMotorShares() >= a){
+				playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getMotorShares()-a);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getMotor() * a);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setMotorShares(board.getMotorShares() + a);
+				System.out.println("You sold " + a + " Motor Stocks" + "/n" + "Your new balance is: " + 
+						playerNames.get(playerNumber).getPlayerBalance());
+                }
+                else {
+					System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+							+ " you currently have" + playerNames.get(playerNumber).getMotorShares() + " Motor stocks");
+					
+					sellShares();
+				}
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
 
-		}
+			}
+			break;
+			case 2:      System.out.println("how many shipping shares would you like to sell?");
+			try {
+				int b  = input.nextInt();
+				 if (b > 0 && b < 6 || b % 5 == 0 )
+					if (board.getShipping() != 0 && playerNames.get(playerNumber).getShippingShares() >= b){
+			playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getShippingShares()-b);
+			int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getShipping() * b);
+			playerNames.get(playerNumber).setBalance(newBalance);
+			board.setShippingShares(board.getShippingShares() + b);
+			System.out.println("You sold " + b + " Shipping Stocks" + "/n" + "Your new balance is: " + 
+					playerNames.get(playerNumber).getPlayerBalance());
+				 }
+				 else{
+					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+								+ " you currently have" + playerNames.get(playerNumber).getShippingShares() + " Shipping stocks");
+					sellShares();
+				 }
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				buyShares();
+			}
+			break;
+			case 3:     System.out.println("how many store shares would you like to sell?");
+			try {
+				int c  = input.nextInt();
+				 if (c > 0 && c < 6 || c % 5 == 0)
+					if (board.getStore() != 0 && playerNames.get(playerNumber).getStoreShares() >= c){
+				playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getStoreShares()-c);
+				int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getStore() * c);
+				playerNames.get(playerNumber).setBalance(newBalance);
+				board.setStoreShares(board.getStoreShares() + c);
+				System.out.println("You sold " + c + " Store Stocks" + "/n" + "Your new balance is: " + 
+						playerNames.get(playerNumber).getPlayerBalance());
+				 }
+				 else{
+					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+								+ " you currently have" + playerNames.get(playerNumber).getStoreShares() + " Store stocks");
+						sellShares();
+					 }
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				sellShares();
+			}
+			break;
+			case 4:       System.out.println("how many steel shares would you like to sell?");
+			try {
+				int d  = input.nextInt();
+				if (d > 0 && d < 6 || d % 5 == 0)
+					if(board.getSteel() != 0 && playerNames.get(playerNumber).getSteelShares() >= d){
+			playerNames.get(playerNumber).setMotorShares(playerNames.get(playerNumber).getSteelShares()-d);
+			int newBalance = playerNames.get(playerNumber).getPlayerBalance() + (board.getSteel() * d);
+			playerNames.get(playerNumber).setBalance(newBalance);
+			board.setSteelShares(board.getSteelShares() + d);
+			System.out.println("You sold " + d + " Steel Stocks" + "/n" + "Your new balance is: " + 
+					playerNames.get(playerNumber).getPlayerBalance());
+				}
+				 else{
+					 System.out.println("Value has to be between 1 and 5 or a multiple of 5" + "/n" + "Or you may not have enough stocks to sell"
+								+ " you currently have" + playerNames.get(playerNumber).getSteelShares() + " Steel stocks");
+						sellShares();
+					 }
+			}
+			catch (Exception e){
+				String throwOut = input.nextLine();  //swallows
+				System.out.println("Error Invalid Data");
+				sellShares();
+			}
+			break;
+
+			}
 		}
 		catch (Exception e){
 			String throwOut = input.nextLine();  //swallows
-	    	System.out.println("Error Invalid Data");
-	    	sellShares();
+			System.out.println("Error Invalid Data");
+			sellShares();
 		}
-		
+
 
 	}
 

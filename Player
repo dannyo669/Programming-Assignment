@@ -3,24 +3,25 @@
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Player implements Serializable {
 	private String playerName; 
+	private String password;
 	private int playerBalance = 80;
 	private int numberOfSteelShares=0;
 	private int numberOfStoreShares=0;
 	private int numberOfMotorShares=0;
 	private int numberOfShippingShares=0;
-	
-	
-	
+	private int allStocks=0;
 
+	
 	/**
 	 * 
 	 * @param playerName
 	 * Constructor
 	 */
-	public Player(String playerName)
+	public Player(String playerName, String password)
 	{
 		if (playerName.length() < 11)
 		{
@@ -30,9 +31,30 @@ public class Player implements Serializable {
 		{
 			this.playerName=playerName.substring(0, 10);
 		}
+		
+		if (password.length() > 15){
+			System.out.println("This password is too long");
+		}
+		else
+		{
+			this.password=password;
+		}
 	}
 
-	
+	/**
+	 * return all stocks the player has
+	 */
+public int allStocks(){
+	int allStocks = numberOfSteelShares + numberOfShippingShares + numberOfShippingShares + numberOfMotorShares;
+	return allStocks;
+}
+
+/**
+ * return users password
+ */
+	public String password(){
+		return password;
+	}
 	/**
 	 * return player name
 	 */

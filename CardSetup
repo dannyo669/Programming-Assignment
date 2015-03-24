@@ -1,75 +1,156 @@
 /**
- * Set up all the different outcomes of the cards
+ * Holds information for the player such as name, balance and shares
  */
 
-public class CardSetup {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-	private String cardType;
+public class Player implements Serializable {
+	private String playerName; 
+	private String password;
+	private int playerBalance = 80;
+	private int numberOfSteelShares=0;
+	private int numberOfStoreShares=0;
+	private int numberOfMotorShares=0;
+	private int numberOfShippingShares=0;
+	private int allStocks=0;
 
-	private String upOrDown;
-	private int cardNumber;
+	
+	/**
+	 * 
+	 * @param playerName
+	 * Constructor
+	 */
+	public Player(String playerName, String password)
+	{
+		if (playerName.length() < 11)
+		{
+			this.playerName=playerName;
+		}
+		else
+		{
+			this.playerName=playerName.substring(0, 10);
+		}
+		
+		if (password.length() > 15){
+			System.out.println("This password is too long");
+		}
+		else
+		{
+			this.password=password;
+		}
+	}
+
+	/**
+	 * return all stocks the player has
+	 */
+public int allStocks(){
+	int allStocks = numberOfSteelShares + numberOfShippingShares + numberOfShippingShares + numberOfMotorShares;
+	return allStocks;
+}
+
+/**
+ * return users password
+ */
+	public String password(){
+		return password;
+	}
+	/**
+	 * return player name
+	 */
+	public String getPlayerName(){
+		return playerName;
+	}
+	
+	/**
+	 * 
+	 * @return the player balance
+	 */
+	public int getPlayerBalance(){
+		return playerBalance;
+	}
+/**
+ * 
+ * @param value
+ * set the players balance
+ */
+	public void setBalance(int value){
+	    this.playerBalance = value;
+	}
+	
+	/**
+	 * 
+	 * @return number of steel shares 
+	 */
+	public int getSteelShares(){
+		return numberOfSteelShares;
+	}
+	
+	/**
+	 * 
+	 * @param shippingShares 
+	 * sets store shares
+	 */
+	public void setSteelShares(int steelShares) {
+	    this.numberOfSteelShares = steelShares;
+	}
 
 	/**
 	 * 
-	 * @param cardType
-	 * @param upOrDown
-	 * @param cardNumber
-	 * Constructor for the CardSetup Class
+	 * @return number of store shares
 	 */
-	public CardSetup(String cardType, String upOrDown, int cardNumber){
-		this.cardType=cardType;
-		this.upOrDown=upOrDown;
-		this.cardNumber=cardNumber;
+	public int getStoreShares(){
+		return numberOfStoreShares;
 	}
-
 	/**
-	 * @return the type of card
+	 * 
+	 * @param shippingShares 
+	 * sets store shares
 	 */
-	public String getCardType(){
-		return cardType;
+	public void setStoreShares(int storeShares) {
+	    this.numberOfStoreShares = storeShares;
 	}
 
 	/**
 	 * 
-	 * @param set the card type
+	 * @return number of shipping shares
 	 */
-	public void setCardType(String cardType){
-		this.cardType=cardType;
-	}
-
-	/**
-	 * @return the card number
-	 */
-	public int getCardNumber(){
-		return cardNumber;
+	public int getShippingShares(){
+		return numberOfShippingShares;
 	}
 
 	/**
 	 * 
-	 * @param cardNumber
-	 * set the card number
+	 * @param shippingShares 
+	 * sets shipping shares
 	 */
-	public void setCardNumber(int cardNumber){
-		this.cardNumber=cardNumber;
+	public void setShippingShares(int shippingShares) {
+	    this.numberOfShippingShares = shippingShares;
 	}
-
+	
 	/**
 	 * 
-	 * @return if it going up or down
+	 * @return number of motor shares
 	 */
-	public String getUpOrDown(){
-		return upOrDown;
+	public int getMotorShares(){
+		return numberOfMotorShares;
 	}
-
 	/**
 	 * 
-	 * @param upOrDown 
-	 * Set if it is going up or down
+	 * @param shippingShares 
+	 * sets shipping shares
 	 */
-	public void setUpOrDown(String upOrDown){
-		this.upOrDown=upOrDown;
+	public void setMotorShares(int motorShares) {
+	    this.numberOfMotorShares = motorShares;
 	}
-
-
+	
+	/**
+	 * 
+	 * @return all shares
+	 */
+	public String getAllShares(){
+		return ("Motor: " + numberOfMotorShares + "\n" + "Shipping: " + numberOfShippingShares + "\n" + "Store: " + 
+				numberOfStoreShares + "\n" + "Steel: " + numberOfSteelShares + "\n");
+	}
 
 }

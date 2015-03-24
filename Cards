@@ -23,7 +23,13 @@ public class Cards {
 		index=0;
 		randomGenerator = new Random();
 	}
-
+	
+	/**
+	 * 
+	 */
+public void clearCards(){
+	cards = new ArrayList();
+}
 	/**
 	 * Populates the ArrayList with all the different types of cards.
 	 */

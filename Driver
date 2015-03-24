@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -29,18 +30,17 @@ public class Driver {
 	 * @throws IOException for the save load feature
 	 * Constructor
 	 */
-	public Driver() throws ClassNotFoundException, IOException
+	public Driver()
 	{
 		input = new Scanner(System.in);
 		board = new Board(10,10,10,10,1);
-
 		cards = new Cards();
 		i=0;
 		playerNumber = 0;
 		numberOfPlayers();
 	}
 
-	public static void main(String[] argvs) throws ClassNotFoundException, IOException{
+	public static void main(String[] argvs){
 		Driver driver = new Driver();
 	}
 
@@ -52,7 +52,7 @@ public class Driver {
 	 * @throws IOException for the save load feature
 	 * This method asks for how many players you want in the game
 	 */
-	private void numberOfPlayers() throws ClassNotFoundException, IOException
+	private void numberOfPlayers()
 	{
 		System.out.println("Enter the number of players: ");
 		try{
@@ -91,11 +91,13 @@ public class Driver {
 	private void run() throws ClassNotFoundException, IOException
 	{
 
-		if (board.getRound() < 4){
+		if (board.getRound() < 12){
+	if (board.getRound() > 1){
+				Collections.rotate(playerNames, -1); // Reference: http://stackoverflow.com/questions/21254985/how-move-first-item-of-arraylist-to-last-position
+			}
 			int option = mainMenu();
 			while (option != 0)
 			{
-
 				switch (option)
 				{
 				case 1:  try{
@@ -141,13 +143,17 @@ public class Driver {
 		else{
 			int i =0;
 			for (Player player: playerNames){
-				playerNames.get(i).setBalance(board.getMotor() * playerNames.get(playerNumber).getMotorShares());
+				playerNames.get(i).setBalance(playerNames.get(i).getPlayerBalance() + 
+						board.getMotor() * playerNames.get(i).getMotorShares());
 				playerNames.get(i).setMotorShares(0);
-				playerNames.get(i).setBalance(board.getSteel() * playerNames.get(playerNumber).getSteelShares());
+				playerNames.get(i).setBalance(playerNames.get(i).getPlayerBalance() + 
+						board.getSteel() * playerNames.get(i).getSteelShares());
 				playerNames.get(i).setSteelShares(0);
-				playerNames.get(i).setBalance(board.getStore() * playerNames.get(playerNumber).getStoreShares());
+				playerNames.get(i).setBalance(playerNames.get(i).getPlayerBalance() + 
+						board.getStore() * playerNames.get(i).getStoreShares());
 				playerNames.get(i).setStoreShares(0);
-				playerNames.get(i).setBalance(board.getShipping() * playerNames.get(playerNumber).getShippingShares());
+				playerNames.get(i).setBalance(playerNames.get(i).getPlayerBalance() + 
+						board.getShipping() * playerNames.get(i).getShippingShares());
 				playerNames.get(i).setShippingShares(0);
 				i++;
 			}
@@ -175,17 +181,16 @@ public class Driver {
 					b++;
 				}
 				if (c > 0){
-					System.out.println("Ther has been a draw" + "\n");
+					System.out.println("There has been a draw" + "\n");
 					for (Player player: playerNames){
-						System.out.println(playerNames.get(d).getPlayerName() + "Finished with " + playerNames.get(d).getPlayerBalance());
+						System.out.println(playerNames.get(d).getPlayerName() + " Finished with " + playerNames.get(d).getPlayerBalance());
 						d++;
 					}
 				}
 				else{
 					System.out.println("The winner is " + richest.getPlayerName());
 				}
-
-
+ 
 			}}
 	}
 
@@ -197,6 +202,7 @@ public class Driver {
 	 */
 	private void firstMenu() throws ClassNotFoundException, IOException
 	{
+
 		int option = mainMenuTwo();
 		while (option != 0)
 		{
@@ -231,6 +237,7 @@ public class Driver {
 		System.out.println("Exiting... bye");
 		System.exit(0);
 	}
+	
 
 	/**
 	 * 
@@ -257,14 +264,17 @@ public class Driver {
 				case 5:   System.out.println(playerNames.get(playerNumber).getPlayerBalance());
 				break;
 				case 6:     if (playerNumber + 1  == playerNames.size()){
-					board.setRound();
-					endingRound=0;
-					playerNumber =0;
-					run();
+					        board.setRound();
+					        endingRound=0;
+					        playerNumber =0;
+					        run();
 				}            
 				else{
 					playerNumber++;
 					secondMenu();
+					
+						
+				
 
 				}                                      
 				break;
@@ -341,6 +351,7 @@ public class Driver {
 		int option = input.nextInt();
 		return option;
 	}
+	
 
 	/**
 	 * Adds players to the game
@@ -352,7 +363,11 @@ public class Driver {
 			System.out.println("Player Number " + (b+1) + " enter your name: ");
 			try {
 				String c = input.next();
-				Player player = new Player(c);
+				
+			System.out.println("Player Number " + (b+1) + " enter your password");
+			String d = input.next();
+				Player player = new Player(c, d);
+				
 				playerNames.add(player);
 			}
 			catch (Exception e){
@@ -380,6 +395,9 @@ public class Driver {
 						String newStatus = input.next();
 						if (newStatus.toLowerCase().equals("y"))
 						{
+							System.out.println("enter your password");
+							String newPassword = input.next();
+							if(newPassword.equals(playerNames.get(i).password())){
 							System.out.println(cards.drawCard());
 							int index = cards.getIndex();
 							if (cards.currentCardType(index).equals("Store")){
@@ -446,6 +464,10 @@ public class Driver {
 							i++;   
 
 						}
+							else {
+								System.out.println("not a valid password");
+							}
+					}
 					}
 
 					catch (Exception e){

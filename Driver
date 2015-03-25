@@ -386,13 +386,16 @@ public class Driver {
 	 */
 	public String drawingCards(){
 		int i=0;
+		String newStatus;
 		if (playerNames.size() > 0)
 		{
 			for (Player player: playerNames){
 				{
-					System.out.println(playerNames.get(i).getPlayerName() + " are you ready to draw your card? press Y when ready");
 					try{
-						String newStatus = input.next();
+					System.out.println(playerNames.get(i).getPlayerName() + " are you ready to draw your card? press Y when ready");
+					
+						newStatus = input.next();
+					
 						if (newStatus.toLowerCase().equals("y"))
 						{
 							System.out.println("enter your password");
@@ -469,7 +472,7 @@ public class Driver {
 							}
 					}
 					}
-
+					
 					catch (Exception e){
 						String throwOut = input.nextLine();  //swallows
 						System.out.println("Error Invalid Data");

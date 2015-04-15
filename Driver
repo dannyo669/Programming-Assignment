@@ -57,7 +57,7 @@ public class Driver {
 		System.out.println("Enter the number of players: ");
 		try{
 			int i = input.nextInt();
-			if (i>=3 && i < 14)
+			if (i>=3 && i < 7)
 			{
 				this.i=i;
 				run();
@@ -65,7 +65,7 @@ public class Driver {
 			else
 			{
 				System.out.println("Invalid Number of Players, has to be between 3 and 6");
-				System.out.println("\nPress any key to continue...");
+				System.out.println("\nPress enter to continue...");
 				input.nextLine();
 				input.nextLine();
 				//clear the terminal window and display the main menu again
@@ -76,7 +76,7 @@ public class Driver {
 		{ 
 			String throwOut = input.nextLine();  //swallows
 			System.out.println("Num expected - you entered  text");
-			numberOfPlayers();
+     	numberOfPlayers();
 		}
 
 
@@ -129,7 +129,7 @@ public class Driver {
 				break;
 
 				}
-				System.out.println("\nPress any key to continue...");
+				System.out.println("\nPress enter to continue...");
 				input.nextLine();
 				input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
 
@@ -226,7 +226,7 @@ public class Driver {
 			}
 			break;
 			}
-			System.out.println("\nPress any key to continue...");
+			System.out.println("\nPress enter to continue...");
 			input.nextLine();
 			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
 
@@ -272,16 +272,12 @@ public class Driver {
 				else{
 					playerNumber++;
 					secondMenu();
-					
-						
-				
-
 				}                                      
 				break;
 				}
 
 			}
-			System.out.println("\nPress any key to continue...");
+			System.out.println("\nPress enter to continue...");
 			input.nextLine();
 			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
 
@@ -757,7 +753,6 @@ public class Driver {
 		oos.writeObject(playerNames);
 		System.out.println("Saved");
 
-		//Don't forget to close the streams (Avoids memory leaks)
 		oos.close();
 		fos.close();
 	}
@@ -780,7 +775,6 @@ public class Driver {
 		board = (Board) ois.readObject();
 		playerNames = (ArrayList<Player>) ois.readObject();
 
-		//Again, don't forget to close the streams
 		fis.close();
 		ois.close();
 	}
